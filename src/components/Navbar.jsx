@@ -37,7 +37,7 @@ const Navbar = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         setUser(data.user);
       } catch (err) {
@@ -60,10 +60,18 @@ const Navbar = () => {
   };
 
   const navItems = [
-    { icon: <LayoutDashboard size={20} />, label: "Dashboard", path: "/recipe-home" },
+    {
+      icon: <LayoutDashboard size={20} />,
+      label: "Dashboard",
+      path: "/recipe-home",
+    },
     { icon: <Utensils size={20} />, label: "My Recipes", path: "/recipe-my" },
     { icon: <User size={20} />, label: "Profile", path: "/profile" },
-    { icon: <ClipboardList size={20} />, label: "Meal Plan", path: "/meal-planner" },
+    {
+      icon: <ClipboardList size={20} />,
+      label: "Meal Plan",
+      path: "/meal-planner",
+    },
   ];
 
   if (loading) {
@@ -89,10 +97,14 @@ const Navbar = () => {
 
       {/* Logo */}
       <div className="p-6 flex items-center gap-3">
-        <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center">
+        <div className="w-10 h-10 bg-red-500 rounded-xl flex items-center justify-center">
           <ChefHat size={22} />
         </div>
-        {!isCollapsed && <span className="font-black">RECIPENEST</span>}
+        {!isCollapsed && (
+          <span className="text-2xl font-black tracking-tight text-gray-200">
+            Recipe<span className="text-red-500">Nest</span>
+          </span>
+        )}
       </div>
 
       {/* Navigation Items */}
@@ -103,7 +115,9 @@ const Navbar = () => {
             <Link key={item.label} to={item.path}>
               <div
                 className={`flex items-center gap-4 px-4 py-3 rounded-xl ${
-                  isActive ? "bg-emerald-500/20" : "text-gray-400 hover:bg-white/5"
+                  isActive
+                    ? "bg-emerald-500/20"
+                    : "text-gray-400 hover:bg-white/5"
                 }`}
               >
                 {item.icon}
@@ -138,7 +152,10 @@ const Navbar = () => {
                   <p className="text-sm font-semibold">{user.username}</p>
                   <p className="text-xs text-gray-400">{user.email}</p>
                 </div>
-                <button onClick={handleLogout} className="text-red-400 cursor-pointer">
+                <button
+                  onClick={handleLogout}
+                  className="text-red-400 cursor-pointer"
+                >
                   <LogOut size={25} />
                 </button>
               </>

@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { Clock, ArrowRight, ChefHat, UtensilsCrossed } from "lucide-react"; // Modern Icons
 import HomeNavar from "../components/HomeNavbar";
 import Images from "../assets/images/images.png";
-
+import Footer from "../components/Footer";
 const Home = () => {
   const [recipes, setRecipe] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -47,6 +47,7 @@ const Home = () => {
   };
 
   return (
+    <>
     <div className="bg-[#FAFAFA] min-h-screen font-sans selection:bg-red-100">
       {/* HERO SECTION */}
       <section className="relative overflow-hidden bg-white pb-20 border-b border-gray-100">
@@ -205,6 +206,8 @@ const Home = () => {
         }
       `}</style>
     </div>
+    <Footer></Footer>
+    </>
   );
 };
 

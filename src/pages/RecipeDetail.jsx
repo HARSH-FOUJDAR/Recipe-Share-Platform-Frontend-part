@@ -18,6 +18,7 @@ const RecipeDetail = () => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [shareCount, setShareCount] = useState(0);
+
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
@@ -42,26 +43,6 @@ const RecipeDetail = () => {
     fetchRecipe();
   }, [id]);
 
-  const handleLike = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.warning("Please login to like this recipe");
-      navigate("/login");
-      return;
-    }
-
-    try {
-      const res = await axios.post(
-        `https://recipe-share-platform-backend-2.onrender.com/recipes/${id}/like`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-      setLiked(res.data.liked);
-      setLikesCount(res.data.likesCount);
-    } catch (err) {
-      toast.error("Error updating like");
-    }
-  };
   const handleComment = async (e) => {
     e.preventDefault();
     if (!comment.trim()) return;
@@ -159,21 +140,11 @@ const RecipeDetail = () => {
       console.log(err);
     }
   };
-  if (loading)
-    return (
-      <div className="fixed inset-0 bg-white flex flex-col justify-center items-center z-50">
-        <Loader2 color="#ef4444" size={70} />
-        <p className="mt-4 text-gray-500 font-medium">
-          Cooking up the details...
-        </p>
-      </div>
-    );
-
   if (!recipe)
     return (
       <div className="text-center mt-20 text-gray-500 italic">
         <div className="fixed inset-0  flex flex-col justify-center items-center z-50">
-          <ClipLoader color="#ef4444" size={70} className="w-50" />
+          <ClipLoader color="#ef4444" size={100} className="w-50" />
           <p className="mt-4 text-2xl text-gray-500 font-medium">
             Cooking up the details...
           </p>
@@ -222,12 +193,6 @@ const RecipeDetail = () => {
 
           {/* QUICK ACTIONS BAR */}
           <div className="absolute top-6 right-6 flex flex-col gap-4">
-            <button
-              onClick={handleLike}
-              className={`p-4 rounded-full shadow-lg transition-all transform hover:scale-110 active:scale-90 cursor-pointer   ${liked ? "bg-red-500 text-white" : "bg-white text-gray-800"}`}
-            >
-              <Heart fill={liked ? "currentColor" : "none"} size={24} />
-            </button>
             <div>
               <button
                 onClick={handleShare}

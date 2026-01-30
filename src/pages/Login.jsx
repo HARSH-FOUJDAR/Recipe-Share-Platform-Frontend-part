@@ -81,11 +81,11 @@ const Login = () => {
       <div className="w-full max-w-md">
         {/* BRAND */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-emerald-600 rounded-2xl shadow-xl shadow-emerald-100 mb-4 transition-transform hover:scale-110">
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-red-600 rounded-2xl shadow-xl shadow-emerald-100 mb-4 transition-transform hover:scale-110">
             <UtensilsCrossed className="text-white w-8 h-8" />
           </div>
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">
-            Recipe<span className="text-emerald-600">Nest</span>
+            Recipe<span className="text-red-600">Nest</span>
           </h1>
           <p className="text-slate-500 mt-2 font-medium italic">
             "Where every chef finds home."

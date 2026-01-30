@@ -52,7 +52,7 @@ const Register = () => {
       <div className="w-full max-w-md">
         {/* BRAND LOGO/NAME */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-emerald-600 rounded-2xl shadow-lg shadow-emerald-200 mb-4">
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-red-600 rounded-2xl shadow-lg shadow-emerald-200 mb-4">
             <ChefHat className="text-white w-8 h-8" />
           </div>
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">

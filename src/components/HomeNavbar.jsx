@@ -7,7 +7,7 @@ const HomeNavbar = () => {
     <nav className="w-full bg-white border-b shadow-sm px-6 py-4 flex items-center justify-between">
       {/*  LOGO */}
       <h1 className="text-2xl font-extrabold text-black">
-        Recipe<span className="text-emerald-600">Nest</span>
+        Recipe<span className="text-red-600">Nest</span>
       </h1>
 
       {/*  AUTH BUTTONS */}
@@ -21,7 +21,7 @@ const HomeNavbar = () => {
 
         <Link
           to="/register"
-          className="bg-emerald-600 hover:bg-emerald-800 text-white px-6 py-2 rounded-full text-sm font-semibold"
+          className="bg-red-600 hover:bg-red-800 text-white px-6 py-2 rounded-full text-sm font-semibold"
         >
           Sign up
         </Link>
