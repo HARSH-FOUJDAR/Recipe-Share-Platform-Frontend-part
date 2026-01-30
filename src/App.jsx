@@ -12,7 +12,7 @@ import MealPlanner from "./pages/MealPlanner";
 import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
 import RecipeHome from "./pages/RecipeHome";
-import Myrecipe from "./pages/MyRecipe";
+import Myrecipe from "./pages/myRecipe";
 const App = () => {
   return (
     <BrowserRouter>
