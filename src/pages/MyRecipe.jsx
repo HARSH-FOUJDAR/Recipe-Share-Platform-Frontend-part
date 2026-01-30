@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Loader2, Search, Edit3, Trash2, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const myRecipe = () => {
+const MyRecipe = () => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -148,4 +148,4 @@ const myRecipe = () => {
   );
 };
 
-export default myRecipe;
+export default MyRecipe;
