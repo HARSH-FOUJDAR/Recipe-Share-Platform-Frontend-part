@@ -93,7 +93,7 @@ const MyRecipe = () => {
           <div className="text-center mt-10">
             <p className="text-gray-500 text-xl italic">You haven’t created any recipes yet 🍳</p>
             <button 
-              onClick={() => navigate("/add-recipe")} 
+              onClick={() => navigate("/recipes")} 
               className="mt-4 text-emerald-600 font-bold hover:underline"
             >
               Start Cooking Now
