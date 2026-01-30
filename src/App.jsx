@@ -12,29 +12,26 @@ import MealPlanner from "./pages/MealPlanner";
 import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
 import RecipeHome from "./pages/RecipeHome";
-import Myrecipe from "./pages/myRecipe";
+import MyRecipe from "./pages/myRecipe";
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/*  Public Routes */}
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/reset-password/:token" element={<Resetpassword />} />
-
-        {/*  After Login */}
-        {/* New Recipe */}
-        <Route path="/recipes" element={<CreateRecipe />} />
-
-        {/* Edit Recipe */}
-        <Route path="/recipes/:id" element={<CreateRecipe />} />
-
+        {/* Recipes Logic */}
+        <Route path="/recipes" element={<CreateRecipe />} /> {/* Add New */}
+        <Route path="/edit-recipe/:id" element={<CreateRecipe />} />{" "}
+        {/* Edit - Path Fixed */}
         <Route path="/recipe/:id" element={<RecipeDetail />} />
         <Route path="/meal-planner" element={<MealPlanner />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/recipe-my" element={<Myrecipe />} />
+        {/* Yahan path wahi rakhein jo Navbar mein use kiya hai */}
+        <Route path="/recipe-my" element={<MyRecipe />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/recipe-home" element={<RecipeHome />} />
       </Routes>
