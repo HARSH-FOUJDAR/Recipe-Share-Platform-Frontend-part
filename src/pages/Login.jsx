@@ -9,22 +9,52 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [checkingToken, setCheckingToken] = useState(true);
 
+  // Check if token exists & valid
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) navigate("/recipe-home");
+    const checkToken = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        setCheckingToken(false); // No token, show login form
+        return;
+      }
+
+      try {
+        const { data } = await axios.get(
+          "https://recipe-share-platform-backend-2.onrender.com/auth/profile",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        if (data.user) {
+          // Token valid, redirect to recipe-home
+          navigate("/recipe-home");
+        }
+      } catch (err) {
+        // Token invalid or expired → remove it
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      } finally {
+        setCheckingToken(false);
+      }
+    };
+
+    checkToken();
   }, [navigate]);
 
+  // Handle login form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       const { data } = await axios.post(
-        "https://recipe-share-platform-backend.vercel.app/auth/login",
-        { email, password },
+        "https://recipe-share-platform-backend-2.onrender.com/auth/login",
+        { email, password }
       );
 
+      // Save token & user to localStorage
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
@@ -37,10 +67,19 @@ const Login = () => {
     }
   };
 
+  // Show loader while checking token
+  if (checkingToken) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="animate-spin" size={50} />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] px-4 font-sans">
       <div className="w-full max-w-md">
-        {/* BRAND IDENTITY */}
+        {/* BRAND */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-14 h-14 bg-emerald-600 rounded-2xl shadow-xl shadow-emerald-100 mb-4 transition-transform hover:scale-110">
             <UtensilsCrossed className="text-white w-8 h-8" />
@@ -53,7 +92,7 @@ const Login = () => {
           </p>
         </div>
 
-        {/* LOGIN CARD */}
+        {/* LOGIN FORM */}
         <div className="bg-white rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-slate-100 p-8 md:p-10">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* EMAIL */}
@@ -84,7 +123,6 @@ const Login = () => {
                 </label>
                 <Link
                   to="/forget-password"
-                  size={13}
                   className="text-sm font-bold text-emerald-600 hover:text-emerald-700"
                 >
                   Forgot?
@@ -144,7 +182,7 @@ const Login = () => {
           </form>
         </div>
 
-        {/* BOTTOM FOOTER */}
+        {/* FOOTER */}
         <p className="text-center mt-10 text-xs text-slate-400 font-medium">
           Secure Login Powered by RecipeNest v2.0
         </p>

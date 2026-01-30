@@ -16,7 +16,7 @@ const Home = () => {
     const fetchRecipe = async () => {
       try {
         const res = await axios.get(
-          "https://recipe-share-platform-backend.vercel.app/recipes",
+          "https://recipe-share-platform-backend-2.onrender.com/recipes",
         );
         setRecipe(res.data || []);
       } catch (error) {

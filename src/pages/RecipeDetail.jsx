@@ -23,7 +23,7 @@ const RecipeDetail = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          `https://recipe-share-platform-backend.vercel.app/recipes/${id}`,
+          `https://recipe-share-platform-backend-2.onrender.com/recipes/${id}`,
           { headers: token ? { Authorization: `Bearer ${token}` } : {} },
         );
 
@@ -52,7 +52,7 @@ const RecipeDetail = () => {
 
     try {
       const res = await axios.post(
-        `https://recipe-share-platform-backend.vercel.app/recipes/${id}/like`,
+        `https://recipe-share-platform-backend-2.onrender.com/recipes/${id}/like`,
         {},
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -74,7 +74,7 @@ const RecipeDetail = () => {
 
     try {
       const res = await axios.post(
-        `https://recipe-share-platform-backend.vercel.app/comments/comment`,
+        `https://recipe-share-platform-backend-2.onrender.com/comments/comment`,
         { text: comment, recipeId: id },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -93,7 +93,7 @@ const RecipeDetail = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          `https://recipe-share-platform-backend.vercel.app/comments/comment/${id}`,
+          `https://recipe-share-platform-backend-2.onrender.com/comments/comment/${id}`,
           {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           },
@@ -115,7 +115,7 @@ const RecipeDetail = () => {
     }
     try {
       await axios.delete(
-        `https://recipe-share-platform-backend.vercel.app/comments/delete/${commentId}`,
+        `https://recipe-share-platform-backend-2.onrender.com/comments/delete/${commentId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -136,7 +136,7 @@ const RecipeDetail = () => {
 
     try {
       const res = await axios.post(
-        `https://recipe-share-platform-backend.vercel.app/recipes/${id}/share`,
+        `https://recipe-share-platform-backend-2.onrender.com/recipes/${id}/share`,
         {},
         {
           headers: token ? { Authorization: `Bearer ${token}` } : {},

@@ -48,7 +48,7 @@ const RecipeHome = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://recipe-share-platform-backend.vercel.app/recipes",
+        "https://recipe-share-platform-backend-2.onrender.com/recipes",
         {
           headers: { Authorization: `Bearer ${token}` },
         },

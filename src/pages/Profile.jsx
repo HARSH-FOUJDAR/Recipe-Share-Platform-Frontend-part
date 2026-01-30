@@ -11,24 +11,26 @@ const Profile = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-    const fetchProfile = async () => {
+    const checkAuth = async () => {
+      if (!token) {
+        navigate("/login");
+        return;
+      }
       try {
         const { data } = await axios.get(
-          "https://recipe-share-platform-backend.vercel.app/auth/profile",
+          "https://recipe-share-platform-backend-2.onrender.com/auth/profile",
           { headers: { Authorization: `Bearer ${token}` } },
         );
         setUser(data.user);
       } catch (error) {
-        console.error("Fetch error", error);
+        console.error(error);
+        navigate("/login");
       } finally {
         setLoading(false);
       }
     };
-    fetchProfile();
+
+    checkAuth();
   }, [token, navigate]);
 
   if (loading)

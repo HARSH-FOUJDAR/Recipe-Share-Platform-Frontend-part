@@ -29,7 +29,7 @@ const Register = () => {
       };
 
       await axios.post(
-        "https://recipe-share-platform-backend.vercel.app/auth/register",
+        "https://recipe-share-platform-backend-2.onrender.com/auth/register",
         payload,
         {
           headers: {

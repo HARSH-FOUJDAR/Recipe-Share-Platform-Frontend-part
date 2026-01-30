@@ -34,7 +34,7 @@ const CreateRecipe = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          `https://recipe-share-platform-backend.vercel.app/recipes/${recipeId}`,
+          `https://recipe-share-platform-backend-2.onrender.com/recipes/${recipeId}`,
           { headers: { Authorization: `Bearer ${token}` } },
         );
 
