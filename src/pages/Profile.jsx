@@ -55,8 +55,36 @@ const Profile = () => {
           <div className="bg-[#0B0F1A] border border-white/5 rounded-[2rem] p-8 space-y-8">
             {/* Avatar & Name */}
             <div className="flex items-center gap-5 border-b border-white/5 pb-8">
-              <div className="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center border border-emerald-500/20">
-                <User size={40} className="text-emerald-500" />
+              <div className="">
+                <form
+                  class="flex flex-col gap-4"
+                  action="/profile"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
+                  <label class="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center border border-emerald-500/20 cursor-pointer">
+                    <User size={40} />
+                    <input
+                      type="file"
+                      class="hidden"
+                      accept="image/*"
+                      name="avatar"
+                    />
+                  </label>
+
+                  <img
+                    id="preview"
+                    class="hidden w-32 h-32 object-cover rounded-full mx-auto"
+                    alt="Preview"
+                  />
+
+                  <button
+                    type="submit"
+                    class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+                  >
+                    Upload
+                  </button>
+                </form>
               </div>
               <div>
                 <h2 className="text-xl font-bold uppercase tracking-tight">

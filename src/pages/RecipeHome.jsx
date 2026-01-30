@@ -25,11 +25,11 @@ const RecipeHome = () => {
     setEditRecipe(recipes._id);
     setTitle(recipes.title);
     setDescription(recipes.Description);
-    setIngredients(recipes.ingredients.join(", "))
+    setIngredients(recipes.ingredients.join(", "));
     setSteps(recipes.steps);
     setCategory(recipes.category);
     setcookTime(recipes.cookTime);
-    setPhoto(recipes.photo)
+    setPhoto(recipes.photo);
   };
   const token = localStorage.getItem("token");
 
@@ -56,7 +56,7 @@ const RecipeHome = () => {
 
       setRecipes(response.data.recipes || response.data);
     } catch (error) {
-      toast.info("Please Wait ");
+      toast.info("Please Wait");
     } finally {
       setLoading(false);
     }
@@ -65,6 +65,7 @@ const RecipeHome = () => {
   useEffect(() => {
     if (!token) {
       navigate("/login");
+      toast("please Login Again Server Slow");
     } else {
       fetchAllRecipes();
     }
@@ -106,7 +107,6 @@ const RecipeHome = () => {
   return (
     <div className="bg-gray-50 min-h-screen pb-10">
       <Navbar />
-
       {/* Hero / Search Section */}
       <div className="bg-slate-900 py-16 px-6 text-center text-white">
         <h1 className="text-4xl font-bold mb-6">Find Your Favorite Recipes</h1>
@@ -194,7 +194,6 @@ const RecipeHome = () => {
           </div>
         )}
 
-        {/* Empty state agar search match na kare */}
         {!loading && filteredData.length === 0 && (
           <div className="text-center mt-10 text-gray-500">NO Recipe</div>
         )}
