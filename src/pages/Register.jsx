@@ -8,7 +8,6 @@ import { BsPencilSquare } from "react-icons/bs";
 
 const Register = () => {
   const navigate = useNavigate();
-
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,9 +20,22 @@ const Register = () => {
     setLoading(true);
 
     try {
+      const payload = {
+        username,
+        email,
+        password,
+        MobileNum: Mobile,
+        bio: Bio,
+      };
+
       await axios.post(
         "https://recipe-share-platform-backend.vercel.app/auth/register",
-        { username, email, password, MobileNum: Mobile, bio: Bio },
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
       );
 
       toast.success("Welcome to the community!");

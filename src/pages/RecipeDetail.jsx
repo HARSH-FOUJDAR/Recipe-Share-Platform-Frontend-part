@@ -34,7 +34,7 @@ const RecipeDetail = () => {
         const currentUserId = res.data.currentUserId;
         setLiked(data.likes?.includes(currentUserId));
       } catch (err) {
-        toast.error("Failed to load recipe details");
+        toast.info("Failed to load recipe details plese wait");
       } finally {
         setLoading(false);
       }
