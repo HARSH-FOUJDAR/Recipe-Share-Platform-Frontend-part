@@ -243,7 +243,7 @@ const RecipeHome = () => {
                         size={18}
                         fill={recipe.isFavrouite ? "white" : "none"}
                       />
-                      {recipe.isFavrouite ? "In Favorites" : "Add to Favorites"}
+                      {recipe.isFavrouite ? "Delete Favrouits" : "Add to Favorites"}
                     </button>
                   </div>
                 </div>
