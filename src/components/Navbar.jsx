@@ -129,7 +129,7 @@ const Navbar = () => {
       <motion.aside
         initial={false}
         animate={{ width: isCollapsed ? "88px" : "280px" }}
-        className="hidden lg:flex fixed left-0 top-0 h-screen bg-slate-900 text-white flex-col z-50 border-r border-white/5"
+        className="hidden lg:flex fixed left-0 top-0 h-screen bg-orange-500 text-black  flex-col z-50 border-r border-white/5"
       >
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
@@ -172,8 +172,8 @@ const Navbar = () => {
                 <div
                   className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${
                     isActive
-                      ? "bg-emerald-500/10 text-emerald-500"
-                      : "text-gray-400 hover:bg-white/5 hover:text-white"
+                      ? "bg-emerald-500/10 text-white"
+                      : "text-gray-900 hover:bg-white/5 hover:text-white"
                   }`}
                 >
                   {item.icon}
