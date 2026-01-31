@@ -1,16 +1,68 @@
-# React + Vite
+RecipeNest – Full-Stack Recipe Sharing Platform
+RecipeNest ek professional MERN stack application hai jo users ko recipes share karne, discover karne, chefs ko follow karne aur meal planning karne ki suvidha deta hai. Ise coding assessment ke guidelines ke mutabiq develop kiya gaya hai.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ Features Implemented
+1. Recipe Management & Discovery
+Share Recipes: Users title, ingredients, step-by-step instructions, aur servings add kar sakte hain.
 
-Currently, two official plugins are available:
+Media Integration: Photos aur YouTube video tutorials support.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Advanced Search: Ingredients, cuisine, aur meal type ke basis par filter karne ki suvidha.
 
-## React Compiler
+Ratings & Reviews: 1-5 star star rating aur detailed comments system.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. User & Social Features
+User Profiles: Personalized dashboard jahan submitted recipes aur favorites manage hote hain.
 
-## Expanding the ESLint configuration
+Follow System: Naye chefs ko follow aur unfollow karne ka real-time system.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Favorites: Pasandida recipes ko save karne ke liye wishlist feature.
+
+3. Meal Planning & Shopping List
+Meal Planner: Weekly meal planning tool.
+
+Auto-Generated Shopping List: Selected recipes ke ingredients ki automatically list generate hoti hai jise print kiya ja sakta hai.
+
+ Tech Stack
+Frontend: React.js, TailwindCSS, Framer Motion (Animations), Lucide React (Icons).
+
+Backend: Node.js, Express.js.
+
+Database: MongoDB Atlas.
+
+Auth: JSON Web Tokens (JWT) & BcryptJS.
+
+Deployment: * Frontend: Netlify / Vercel.
+
+Backend: Render.
+
+ Project Structure
+Plaintext
+├── backend/
+│   ├── controllers/      # Logic for Recipes, Users, Follows, Favs
+│   ├── models/           # Mongoose Schemas (User.model, Recipe.model, etc.)
+│   ├── routes/           # Express Endpoints
+│   └── middleware/       # Authentication (JWT) & Error Handling
+├── frontend/
+│   ├── src/
+│   │   ├── components/   # Reusable UI (Navbar, RecipeCard, Loader)
+│   │   ├── pages/        # Main Views (Home, Profile, MealPlanner)
+│   │   └── App.js        # React Router setup
+└── README.md
+⚙️ Setup & Installation
+1. Clone the project:
+
+Bash
+cd recipe-nest
+2. Backend Setup:
+
+Bash
+cd backend
+npm install
+npm start
+3. Frontend Setup:
+
+Bash
+cd frontend
+npm install
+npm start
