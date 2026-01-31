@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { Star } from "lucide-react";
 import {
   LayoutDashboard,
   Utensils,
@@ -72,6 +73,7 @@ const Navbar = () => {
       label: "Meal Plan",
       path: "/meal-planner",
     },
+    { icon: <Star size={20} />, label: "Favorite", path: "/favrouits" },
   ];
 
   if (loading) {
@@ -154,9 +156,9 @@ const Navbar = () => {
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="text-red-400 cursor-pointer"
+                  className="text-red-500 cursor-pointer"
                 >
-                  <LogOut size={25} />
+                  <LogOut size={30} />
                 </button>
               </>
             )}
