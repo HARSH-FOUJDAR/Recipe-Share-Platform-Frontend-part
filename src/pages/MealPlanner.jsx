@@ -110,7 +110,7 @@ const MealPlanner = () => {
   if (loading)
     return (
       <div className="min-h-screen  flex items-center justify-center gap-5">
-        <Loader2 className="text-emerald-500 animate-spin" size={100} />
+        <Loader2 className="text-red-500 animate-spin" size={100} />
         <p className="text-2xl mt-4">Please Wait....</p>
       </div>
     );

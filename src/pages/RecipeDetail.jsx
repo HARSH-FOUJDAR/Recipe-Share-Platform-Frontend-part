@@ -54,7 +54,7 @@ const RecipeDetail = () => {
 
       if (ratingRes.data.rating?.length > 0) {
         const avg =
-          ratingRes.data.rating.reduce((a, b) => a + b.rating, 0) /
+          ratingRes.data.rating.reduce((a, b) => a + b.rating, 0) 
           ratingRes.data.count;
         setAverageRating(avg);
       }
