@@ -25,7 +25,7 @@ const RecipeHome = () => {
   const token = localStorage.getItem("token");
 
   const handleLike = async (e, recipeId) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
 
     const token = localStorage.getItem("token");
     if (!token) {
