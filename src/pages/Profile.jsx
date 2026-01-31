@@ -79,13 +79,6 @@ const Profile = () => {
                     class="hidden w-32 h-32 object-cover rounded-full mx-auto"
                     alt="Preview"
                   />
-
-                  <button
-                    type="submit"
-                    class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition"
-                  >
-                    Upload
-                  </button>
                 </form>
               </div>
               <div>

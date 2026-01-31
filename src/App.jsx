@@ -17,20 +17,19 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/reset-password/:token" element={<Resetpassword />} />
-        {/* Recipes Logic */}
-        <Route path="/recipes" element={<CreateRecipe />} /> {/* Add New */}
-        <Route path="/edit-recipe/:id" element={<CreateRecipe />} />{" "}
-        {/* Edit - Path Fixed */}
+
+        <Route path="/recipes" element={<CreateRecipe />} />
+        <Route path="/edit-recipe/:id" element={<CreateRecipe />} />
+
         <Route path="/recipe/:id" element={<RecipeDetail />} />
         <Route path="/meal-planner" element={<MealPlanner />} />
         <Route path="/profile" element={<Profile />} />
-        {/* Yahan path wahi rakhein jo Navbar mein use kiya hai */}
+
         <Route path="/recipe-my" element={<MyRecipe />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/recipe-home" element={<RecipeHome />} />

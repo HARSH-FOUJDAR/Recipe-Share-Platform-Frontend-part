@@ -86,7 +86,7 @@ const Register = () => {
               </div>
             </div>
 
-            {/* EMAIL FIELD */}
+            {/* EMAIL */}
             <div className="space-y-1.5">
               <label className="text-sm font-semibold text-slate-700 ml-1">
                 Email Address

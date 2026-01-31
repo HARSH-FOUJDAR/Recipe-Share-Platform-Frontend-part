@@ -1,50 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { Heart, Clock, Search } from "lucide-react";
+import { Heart, Clock, Search, Utensils } from "lucide-react";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import Footer from "../components/Footer";
+
 const RecipeHome = () => {
   const navigate = useNavigate();
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [editRecipe, setEditRecipe] = useState(null);
+  const [activeCategory, setActiveCategory] = useState("All");
 
-  const [title, setTitle] = useState("");
-  const [Description, setDescription] = useState("");
-  const [ingredients, setIngredients] = useState("");
-  const [steps, setSteps] = useState("");
-  const [category, setCategory] = useState("");
-  const [cookingTime, setcookTime] = useState("");
-  const [photo, setPhoto] = useState("");
-
-  const handelEdit = (recipes) => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    setEditRecipe(recipes._id);
-    setTitle(recipes.title);
-    setDescription(recipes.Description);
-    setIngredients(recipes.ingredients.join(", "));
-    setSteps(recipes.steps);
-    setCategory(recipes.category);
-    setcookTime(recipes.cookTime);
-    setPhoto(recipes.photo);
-  };
+  const categories = [
+    "All",
+    "Breakfast",
+    "Lunch",
+    "Dinner",
+    "Desserts",
+    "Quick Snack",
+  ];
   const token = localStorage.getItem("token");
 
-  let userId = null;
-  if (token) {
+ 
+  const userId = useMemo(() => {
+    if (!token) return null;
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
-      userId = payload.id;
+      return payload.id;
     } catch (e) {
-      console.log("Token error");
+      return null;
     }
-  }
+  }, [token]);
 
-  // Recipes load karne ka function
   const fetchAllRecipes = async () => {
     try {
       setLoading(true);
@@ -54,10 +44,9 @@ const RecipeHome = () => {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
-
       setRecipes(response.data.recipes || response.data);
     } catch (error) {
-      toast.info("Please Wait");
+      toast.info("Connecting to server...");
     } finally {
       setLoading(false);
     }
@@ -66,51 +55,25 @@ const RecipeHome = () => {
   useEffect(() => {
     if (!token) {
       navigate("/login");
-      toast("please Login Again Server Slow");
     } else {
       fetchAllRecipes();
     }
   }, []);
 
-  const handleLikeClick = async (e, recipeId) => {
-    e.stopPropagation();
 
-    try {
-      await axios.post(
-        `https://recipe-share-platform-backend.vercel.app/recipes/${recipeId}/like`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
-      setRecipes((prevRecipes) =>
-        prevRecipes.map((recipe) => {
-          if (recipe._id === recipeId) {
-            const isAlreadyLiked = recipe.like.includes(userId);
-
-            const updatedLikes = isAlreadyLiked
-              ? recipe.like.filter((id) => id !== userId)
-              : [...recipe.like, userId];
-
-            return { ...recipe, like: updatedLikes };
-          }
-          return recipe;
-        }),
-      );
-    } catch (error) {
-      toast.error("Like karne mein error aaya");
-    }
-  };
-  // Search filter logic
-  const filteredData = recipes.filter((item) =>
-    item.title.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const filteredData = recipes.filter((recipe) => {
+    const matchesSearch = recipe.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      activeCategory === "All" || recipe.category === activeCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <>
- 
       <div className="bg-gray-50 min-h-screen pb-10">
         <Navbar />
-        {/* Hero / Search Section */}
         <div className="bg-slate-900 py-16 px-6 text-center text-white">
           <h1 className="text-4xl font-bold mb-6">
             Find Your Favorite Recipes
@@ -118,95 +81,114 @@ const RecipeHome = () => {
           <div className="max-w-md mx-auto relative">
             <input
               type="text"
-              placeholder="Search dish name..."
-              className="w-full p-3 pl-10 rounded-lg text-white border-white border-2"
+              placeholder="What do you want to cook?"
+              className="w-full p-4 pl-12 rounded-2xl bg-white/10 border-2 border-white/20 focus:border-orange-500 outline-none transition-all text-white"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+            <Search className="absolute left-4 top-4 text-gray-400" size={24} />
           </div>
         </div>
 
-        {/* Recipe List Grid */}
+     
         <div className="max-w-6xl mx-auto mt-10 px-6">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-            Latest Recipes
+          <div className="flex gap-3 mb-10 overflow-x-auto pb-4 no-scrollbar">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-6 py-2 rounded-full font-bold whitespace-nowrap transition-all shadow-sm ${
+                  activeCategory === cat
+                    ? "bg-orange-500 text-white scale-105 shadow-orange-200"
+                    : "bg-white text-gray-600 hover:bg-orange-50 border border-gray-100"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+            <Utensils className="text-orange-500" />
+            {activeCategory === "All"
+              ? "Latest Recipes"
+              : `${activeCategory} Specials`}
           </h2>
 
           {loading ? (
-            <div className="h-screen flex flex-col justify-center items-center">
-              <ClipLoader color="#f97316" size={60} />
-              <p className="mt-4 text-gray-500">Loading recipe...</p>
+            <div className="h-64 flex flex-col justify-center items-center">
+              <ClipLoader color="#f97316" size={50} />
+              <p className="mt-4 text-gray-500 italic">
+                Mixing the ingredients...
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredData.map((recipe) => {
-                const isLiked = recipe.like?.includes(userId);
-
-                return (
+              {filteredData.length > 0 ? (
+                filteredData.map((recipe) => (
                   <div
                     key={recipe._id}
                     onClick={() => navigate(`/recipe/${recipe._id}`)}
-                    className="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition"
+                    className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                   >
-                    {/* Image */}
-                    <img
-                      src={
-                        recipe.photos || "https://via.placeholder.com/400x250"
-                      }
-                      alt="recipe"
-                      className="w-full h-48 object-cover"
-                    />
-
-                    {/* Content */}
-                    <div className="p-5">
-                      <div className="flex justify-between items-start">
-                        <h3 className="text-xl font-bold text-gray-800">
-                          {recipe.title}
-                        </h3>
-                        <div className="flex flex-col items-center">
-                          <button
-                            onClick={(e) => handleLikeClick(e, recipe._id)}
-                            className="focus:outline-none cursor-pointer"
-                          >
-                            <Heart
-                              size={30}
-                              className={
-                                isLiked
-                                  ? "text-red-500 fill-red-500 "
-                                  : "text-gray-400"
-                              }
-                            />
-                          </button>
-                          <span className="text-xs font-bold text-gray-600">
-                            {recipe.like?.length || 0}
-                          </span>
-                        </div>
-                      </div>
-
-                      <p className="text-sm text-gray-500 mt-1">
-                        By: {recipe.createdBy?.username || "Unknown"}
-                      </p>
-
-                      <div className="flex items-center gap-2 mt-4 text-gray-600">
-                        <Clock size={16} />
-                        <span className="text-sm">
-                          {recipe.cookTime || 20} mins
+                    <div className="relative">
+                      <img
+                        src={
+                          recipe.photos?.[0] ||
+                          "https://via.placeholder.com/400x250"
+                        }
+                        alt={recipe.title}
+                        className="w-full h-56 object-cover"
+                      />
+                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                        <Heart
+                          size={16}
+                          className={
+                            recipe.like?.includes(userId)
+                              ? "text-red-500 fill-red-500"
+                              : "text-gray-400"
+                          }
+                        />
+                        <span className="text-xs font-bold text-gray-700">
+                          {recipe.like?.length || 0}
                         </span>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
 
-          {!loading && filteredData.length === 0 && (
-            <div className="text-center mt-10 text-gray-500">NO Recipe</div>
+                    <div className="p-6">
+                      <span className="text-orange-500 text-xs font-bold uppercase tracking-widest">
+                        {recipe.category}
+                      </span>
+                      <h3 className="text-xl font-bold text-gray-800 mt-1 mb-3 line-clamp-1">
+                        {recipe.title}
+                      </h3>
+
+                      <div className="flex justify-between items-center pt-4 border-t border-gray-50">
+                        <div className="flex items-center gap-2 text-gray-500">
+                          <Clock size={16} />
+                          <span className="text-sm font-medium">
+                            {recipe.cookTime || 20} min
+                          </span>
+                        </div>
+                        <p className="text-sm font-semibold text-gray-400">
+                          By {recipe.createdBy?.username || "Chef"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="col-span-full text-center py-20">
+                  <p className="text-gray-400 text-xl italic">
+                    No recipes found. Try a different search or category! 
+                  </p>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>
-         <Footer></Footer>
+      <Footer />
     </>
   );
 };
