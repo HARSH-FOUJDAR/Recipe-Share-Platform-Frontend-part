@@ -42,10 +42,10 @@ const Profile = () => {
     );
 
   return (
-    <div className="min-h-screen bg-slate-800  backdrop-blur-md text-white flex">
+    <div className="min-h-screen bg-orange-500  backdrop-blur-md text-white flex">
       <Navbar />
 
-      {/* Main Content Area */}
+  
       <main className="flex-1 ml-[85px] lg:ml-[280px] p-6 lg:p-12 flex justify-center">
         <div className="w-full max-w-2xl">
           {/* Header Section */}
@@ -53,8 +53,8 @@ const Profile = () => {
             <h1 className="text-3xl font-bold">Account Settings</h1>
           </div>
 
-          {/* User Info Card */}
-          <div className="bg-[#0B0F1A] border border-white/5 rounded-[2rem] p-8 space-y-8">
+        
+          <div className="bg-slate-800 border border-white/5 rounded-[2rem] p-8 space-y-8">
             {/* Avatar & Name */}
             <div className="flex items-center gap-5 border-b border-white/5 pb-8">
               <div className="">

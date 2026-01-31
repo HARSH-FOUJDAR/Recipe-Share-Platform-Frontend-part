@@ -10,11 +10,9 @@ import {
   Plus,
   ChefHat,
   ChevronLeft,
-  ClipboardList,
   Loader2,
   Star,
-  Menu,
-  X,
+  Settings,
 } from "lucide-react";
 
 const Navbar = () => {
@@ -23,7 +21,6 @@ const Navbar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -39,6 +36,11 @@ const Navbar = () => {
           { headers: { Authorization: `Bearer ${token}` } },
         );
         setUser(data.user);
+        // Important: Update localStorage with latest user info
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ id: data.user._id, ...data.user }),
+        );
       } catch (err) {
         localStorage.removeItem("token");
         navigate("/login");
@@ -50,8 +52,7 @@ const Navbar = () => {
   }, [navigate, token]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.clear();
     navigate("/login");
   };
 
@@ -68,161 +69,169 @@ const Navbar = () => {
       path: "/recipes",
       isSpecial: true,
     },
-    { icon: <Star size={22} />, label: "Fav", path: "/favrouits" },
+    { icon: <Star size={22} />, label: "Favorites", path: "/favrouits" },
     { icon: <User size={22} />, label: "Profile", path: "/profile" },
   ];
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-20 w-full lg:h-screen">
-        <Loader2 className="animate-spin text-emerald-500" size={30} />
+      <div className="flex items-center justify-center h-screen w-full bg-orange-50">
+        <Loader2 className="animate-spin text-orange-500" size={40} />
       </div>
     );
   }
 
   return (
     <>
-      <div className="lg:hidden fixed top-0 left-0 right-0 bg-orange-400 text-white p-4 flex justify-between items-center z-[60] border-b border-white/10">
+      {/* MOBILE TOP BAR */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-orange-100 p-4 flex justify-between items-center z-[60]">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-white">
-            <ChefHat size={18} />
+          <div className="w-9 h-9 bg-orange-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-orange-200">
+            <ChefHat size={20} />
           </div>
-          <span className="text-xl font-bold">
-            Recipe<span className="text-red-500">Nest</span>
+          <span className="text-xl font-black text-gray-800 tracking-tight">
+            Recipe<span className="text-orange-500">Nest</span>
           </span>
         </div>
-        <button onClick={handleLogout} className="text-gray-800">
-          <LogOut size={25} />
+        <button
+          onClick={handleLogout}
+          className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+        >
+          <LogOut size={22} />
         </button>
       </div>
-
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-orange-400 border-t border-white/10 flex justify-around items-center py-2 px-1 z-[60] backdrop-blur-lg bg-opacity-95">
+      {/* MOBILE BOTTOM NAVIGATION */}
+      <nav className="lg:hidden fixed bottom-6 left-4 right-4 bg-gray-900/95 backdrop-blur-xl rounded-3xl flex justify-around items-center py-3 px-2 z-[60] shadow-2xl border border-white/10">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
             <Link
               key={item.label}
               to={item.path}
-              className="flex flex-col items-center gap-1"
+              className="relative p-2 transition-all"
             >
               <div
-                className={`p-2 rounded-xl transition-all ${
-                  isActive
-                    ? item.isSpecial
-                      ? "bg-emerald-500 text-black"
-                      : "text-emerald-500"
-                    : "text-gray-600"
-                } ${item.isSpecial && !isActive ? "bg-slate-800 text-emerald-500" : ""}`}
+                className={`relative z-10 ${isActive ? "text-orange-400" : "text-gray-400"}`}
               >
                 {item.icon}
               </div>
-              <span
-                className={`text-[10px] ${isActive ? "text-emerald-500 font-bold" : "text-gray-900"}`}
-              >
-                {item.label}
-              </span>
+              {isActive && (
+                <motion.div
+                  layoutId="mobileActive"
+                  className="absolute inset-0 bg-orange-500/10 rounded-xl"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
             </Link>
           );
         })}
       </nav>
-
+      {/* DESKTOP SIDEBAR */}
       <motion.aside
         initial={false}
-        animate={{ width: isCollapsed ? "88px" : "280px" }}
-        className="hidden lg:flex fixed left-0 top-0 h-screen bg-orange-500 text-black  flex-col z-50 border-r border-white/5"
+        animate={{ width: isCollapsed ? "100px" : "300px" }}
+        className="hidden lg:flex fixed left-0 top-0 h-screen bg-white text-gray-800 flex-col z-50 border-r border-gray-100 shadow-xl"
       >
+        {/* Collapse Toggle */}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="absolute -right-3 top-10 bg-emerald-500 rounded-full p-1.5 text-black hover:scale-110 transition-transform"
+          className="absolute -right-4 top-12 bg-gray-900 rounded-full p-2 text-white hover:scale-110 transition-transform shadow-lg z-50"
         >
           <ChevronLeft size={16} className={isCollapsed ? "rotate-180" : ""} />
         </button>
 
-        {/* Logo */}
-        <div className="p-8 flex items-center gap-3">
-          <div className="min-w-[40px] h-10 bg-red-500 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/20">
-            <ChefHat size={22} />
+        {/* Logo Section */}
+        <div className="p-8 mb-4 flex items-center gap-4">
+          <div className="min-w-[48px] h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-xl shadow-orange-200 text-white">
+            <ChefHat size={26} />
           </div>
           {!isCollapsed && (
             <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-2xl font-black tracking-tight"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="text-2xl font-black text-gray-800 tracking-tight"
             >
-              Recipe<span className="text-red-500">Nest</span>
+              Recipe<span className="text-orange-500">Nest</span>
             </motion.span>
           )}
         </div>
 
-        <nav className="flex-1 px-4 space-y-2">
+        {/* Navigation Items */}
+        <nav className="flex-1 px-6 space-y-3">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
-            if (item.isSpecial && !isCollapsed) {
-              return (
-                <Link key={item.label} to={item.path} className="block pt-4">
-                  <div className="bg-orange-500  text-black px-4 py-3 rounded-xl flex items-center gap-4 font-bold hover:bg-orange-400 transition-colors">
-                    <Plus size={20} />
-                    <span>Create Recipe</span>
-                  </div>
-                </Link>
-              );
-            }
             return (
               <Link key={item.label} to={item.path}>
-                <div
-                  className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${
+                <motion.div
+                  whileHover={{ x: 5 }}
+                  className={`flex items-center gap-4 px-4 py-4 rounded-2xl transition-all relative group ${
                     isActive
-                      ? "bg-orange-700 text-white"
-                      : "text-gray-900 hover:bg-white/5 hover:text-white"
+                      ? "bg-orange-50 text-orange-600 shadow-sm"
+                      : "text-gray-500 hover:bg-gray-50 hover:text-gray-800"
                   }`}
                 >
-                  {item.icon}
+                  <span
+                    className={`${isActive ? "text-orange-500" : "group-hover:text-orange-500"} transition-colors`}
+                  >
+                    {item.icon}
+                  </span>
                   {!isCollapsed && (
-                    <span className="font-medium">
-                      {item.label === "Fav" ? "Favorites" : item.label}
+                    <span
+                      className={`font-bold tracking-wide ${isActive ? "text-orange-600" : ""}`}
+                    >
+                      {item.label}
                     </span>
                   )}
-                </div>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activePill"
+                      className="absolute left-0 w-1.5 h-6 bg-orange-500 rounded-r-full"
+                    />
+                  )}
+                </motion.div>
               </Link>
             );
           })}
         </nav>
 
+        {/* User Profile Section */}
         {user && (
-          <div className="p-4 border-t border-white/5">
+          <div className="p-6 mt-auto">
             <div
-              className={`flex items-center gap-3 bg-white/5 p-3 rounded-2xl ${isCollapsed ? "justify-center" : ""}`}
+              className={`flex items-center gap-4 p-4 rounded-[2rem] border border-gray-100 shadow-inner bg-gray-50/50 ${isCollapsed ? "justify-center" : ""}`}
             >
-              <div className="min-w-[36px] h-12 w-12  rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold">
+              <div className="min-w-[42px] h-10 w-10 rounded-full bg-orange-500 text-white flex items-center justify-center font-black shadow-md">
                 {user.username?.charAt(0).toUpperCase()}
               </div>
               {!isCollapsed && (
-                <>
-                  <div className="flex-1 overflow-hidden">
-                    <p className="text-sm font-bold truncate">
-                      {user.username}
-                    </p>
-                    <p className="text-xs text-gray-900 truncate">
-                      {user.email}
-                    </p>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="text-gray-900 cursor-pointer hover:text-red-500 p-1"
-                  >
-                    <LogOut size={25} />
-                  </button>
-                </>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-black text-gray-800 truncate">
+                    {user.username}
+                  </p>
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest truncate">
+                    {user.email}
+                  </p>
+                </div>
+              )}
+              {!isCollapsed && (
+                <button
+                  onClick={handleLogout}
+                  className="text-red-600 hover:text-red-500 transition-colors cursor-pointer"
+                  title="Logout"
+                >
+                  <LogOut size={25} />
+                </button>
               )}
             </div>
           </div>
         )}
       </motion.aside>
-
+      {/* Spacing adjustments for Layout */}
       <div
-        className={`hidden lg:block transition-all duration-300 ${isCollapsed ? "ml-[88px]" : "ml-[280px]"}`}
+        className={`hidden lg:block transition-all duration-300 ${isCollapsed ? "ml-[100px]" : "ml-[300px]"}`}
       />
-      <div className="lg:hidden h-16" />
+      <div className="lg:hidden h-20" /> {/* Top safe area for mobile */}
+      <div className="lg:hidden h-24" /> {/* Bottom safe area for mobile nav */}
     </>
   );
 };

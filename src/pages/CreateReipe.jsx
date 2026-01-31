@@ -141,7 +141,7 @@ const CreateRecipe = () => {
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto px-4 md:px-8 mt-[-30px]">
+        <div className="max-w-4xl mx-auto px-4 md:px-8 mt-5">
           <form onSubmit={onSubmit} className="space-y-8">
             {/* 1. Basic Info Card */}
             <div className="bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100">
@@ -196,6 +196,7 @@ const CreateRecipe = () => {
                         placeholder="30"
                         className="w-full p-4 bg-transparent outline-none"
                         value={cookTime}
+                        required
                         onChange={(e) => setCookTime(e.target.value)}
                       />
                     </div>
@@ -209,6 +210,7 @@ const CreateRecipe = () => {
                       <input
                         type="number"
                         placeholder="2"
+                        required
                         className="w-full p-4 bg-transparent outline-none"
                         value={servings}
                         onChange={(e) => setServings(e.target.value)}
@@ -253,6 +255,7 @@ const CreateRecipe = () => {
                       placeholder={`Ingredient ${index + 1}`}
                       className="flex-1 p-3 bg-gray-50 border-none rounded-xl outline-none focus:ring-2 focus:ring-orange-200 transition-all"
                       value={item}
+                      required
                       onChange={(e) =>
                         handleInputChange(
                           index,
