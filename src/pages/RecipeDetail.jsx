@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
@@ -12,6 +12,7 @@ import {
   Loader2,
   ChevronRight,
   Send,
+  Share2,
 } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import { motion, AnimatePresence } from "framer-motion";
@@ -32,6 +33,24 @@ const RecipeDetail = () => {
 
   const API_BASE = "https://recipe-share-platform-backend-2.onrender.com";
   const token = localStorage.getItem("token");
+const handleShare = async () => {
+  const shareUrl = window.location.href;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: recipe.title,
+        text: `Check out this recipe: ${recipe.title}`,
+        url: shareUrl,
+      });
+    } catch (error) {
+      console.log("Share cancelled or failed:", error);
+    }
+  } else {
+    navigator.clipboard.writeText(shareUrl);
+    toast.success("Link copied to clipboard!");
+  }
+};
 
   const fetchRecipeData = useCallback(async () => {
     try {
@@ -134,6 +153,9 @@ const RecipeDetail = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent" />
           <div className="absolute bottom-8 left-8 right-8 text-white">
+            <button onClick={handleShare} className="absolute right-5  bottom-75 cursor-pointer bg-white w-15 h-15 text-black justify-center items-center flex rounded-full">
+              <Share2 size={30} />
+            </button>
             <div className="flex gap-2 mb-3">
               <span className="bg-orange-500 px-3 py-1 rounded-full text-xs font-bold uppercase">
                 {recipe.category}
