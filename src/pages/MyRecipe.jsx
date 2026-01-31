@@ -43,13 +43,13 @@ const MyRecipe = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this recipe?")) return;
-    
+
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`${API_BASE}/recipes/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      
+
       setRecipes((prev) => prev.filter((recipe) => recipe._id !== id));
       toast.success("Recipe deleted successfully");
     } catch (err) {
@@ -58,42 +58,48 @@ const MyRecipe = () => {
   };
 
   const filteredData = recipes.filter((item) =>
-    item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    item.title?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   if (loading)
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
         <Loader2 className="text-emerald-500 animate-spin" size={60} />
-        <p className="text-xl font-medium text-gray-600 mt-4">Loading your kitchen...</p>
+        <p className="text-xl font-medium text-gray-600 mt-4">
+          Loading your kitchen...
+        </p>
       </div>
     );
 
   return (
     <div className="bg-gray-50 min-h-screen">
       <Navbar />
-      
+
       {/* Header Section */}
-      <div className="bg-slate-900 py-16 px-6 text-center text-white">
-        <h1 className="text-4xl font-extrabold mb-6 tracking-tight">Your Recipe Collection</h1>
+      <div className="bg-orange-500 py-16 px-6 text-center text-white">
+        <h1 className="text-4xl font-extrabold mb-6 tracking-tight">
+          Your Recipe Collection
+        </h1>
         <div className="max-w-md mx-auto relative">
           <input
             type="text"
             placeholder="Search your dishes..."
-            className="w-full p-4 pl-12 rounded-2xl bg-white/10 border border-white/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 backdrop-blur-sm transition-all"
+            className="w-full p-4 pl-15 rounded-2xl bg-white border border-black text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 backdrop-blur-sm transition-all"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Search className="absolute left-4 top-4 text-gray-400" size={20} />
+          <Search className="absolute left-4 top-4 text-gray-900" size={20} />
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-12">
         {recipes.length === 0 ? (
           <div className="text-center mt-10">
-            <p className="text-gray-500 text-xl italic">You haven’t created any recipes yet 🍳</p>
-            <button 
-              onClick={() => navigate("/recipes")} 
+            <p className="text-gray-500 text-xl italic">
+              You haven’t created any recipes yet 🍳
+            </p>
+            <button
+              onClick={() => navigate("/recipes")}
               className="mt-4 text-emerald-600 font-bold hover:underline"
             >
               Start Cooking Now
@@ -108,12 +114,16 @@ const MyRecipe = () => {
               >
                 <div className="relative h-48">
                   <img
-                    src={recipe.photos?.[0] || "https://via.placeholder.com/400x300"}
+                    src={
+                      recipe.photos?.[0] ||
+                      "https://via.placeholder.com/400x300"
+                    }
                     className="w-full h-full object-cover"
                     alt={recipe.title}
                   />
                   <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 text-xs font-bold text-gray-700 shadow-sm">
-                    <Clock size={14} className="text-emerald-500" /> {recipe.cookTime} mins
+                    <Clock size={14} className="text-emerald-500" />{" "}
+                    {recipe.cookTime} mins
                   </div>
                 </div>
 

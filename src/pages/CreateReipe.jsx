@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Navbar from "../components/Navbar";
-import { Plus, Trash, Clock, Users, Video, Image, ChefHat } from "lucide-react";
+import {
+  Plus,
+  Trash,
+  Clock,
+  Users,
+  Video,
+  Image,
+  ChefHat,
+  ArrowLeft,
+} from "lucide-react";
 
 const CreateRecipe = () => {
   const navigate = useNavigate();
-  const { id: recipeId } = useParams(); // URL se id milegi
+  const { id: recipeId } = useParams();
   const [title, setTitle] = useState("");
   const [instructions, setInstructions] = useState("");
   const [cookTime, setCookTime] = useState("");
@@ -16,28 +25,27 @@ const CreateRecipe = () => {
   const [ingredients, setIngredients] = useState([""]);
   const [steps, setSteps] = useState([""]);
   const [photos, setPhotos] = useState([""]);
-
+  const [Category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (!token) {
       toast.error("Please login first!");
       navigate("/login");
     }
-  }, [navigate]);
+  }, [navigate, token]);
 
   useEffect(() => {
-    if (!recipeId) return;
+    if (!recipeId || !token) return;
 
     const fetchRecipe = async () => {
       try {
-        const token = localStorage.getItem("token");
         const res = await axios.get(
           `https://recipe-share-platform-backend-2.onrender.com/recipes/${recipeId}`,
           { headers: { Authorization: `Bearer ${token}` } },
         );
-
         const recipe = res.data.recipe || res.data;
 
         setTitle(recipe.title || "");
@@ -45,24 +53,21 @@ const CreateRecipe = () => {
         setCookTime(recipe.cookTime || "");
         setServings(recipe.servings || "");
         setVideoTutorial(recipe.videoTutorial || "");
-        setIngredients(recipe.ingredients.length ? recipe.ingredients : [""]);
-        setSteps(recipe.steps.length ? recipe.steps : [""]);
-        setPhotos(recipe.photos.length ? recipe.photos : [""]);
+        setIngredients(recipe.ingredients?.length ? recipe.ingredients : [""]);
+        setSteps(recipe.steps?.length ? recipe.steps : [""]);
+        setPhotos(recipe.photos?.length ? recipe.photos : [""]);
+        setCategory(recipe.Category || "");
       } catch (err) {
-        toast.error("Failed to load recipe");
+        toast.error("Failed to load recipe data");
       }
     };
-
     fetchRecipe();
-  }, [recipeId]);
+  }, [recipeId, token]);
 
-  //  Dynamic Fields Helpers
+  // Dynamic Input Helpers
   const handleAddInput = (state, setState) => setState([...state, ""]);
   const handleRemoveInput = (index, state, setState) => {
-    if (state.length > 1) {
-      const newArray = state.filter((_, i) => i !== index);
-      setState(newArray);
-    }
+    if (state.length > 1) setState(state.filter((_, i) => i !== index));
   };
   const handleInputChange = (index, value, state, setState) => {
     const newArray = [...state];
@@ -70,19 +75,15 @@ const CreateRecipe = () => {
     setState(newArray);
   };
 
-  //  Form Submit ---
   const onSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    if (!title || !instructions) {
-      toast.error("Title and Description are required!");
-      setLoading(false);
+    if (!title || !Category) {
+      toast.error("Title and Category are required!");
       return;
     }
 
+    setLoading(true);
     try {
-      const token = localStorage.getItem("token");
       const recipeData = {
         title,
         instructions,
@@ -92,11 +93,13 @@ const CreateRecipe = () => {
         ingredients,
         steps,
         photos,
+        Category,
       };
 
       const url = recipeId
-        ? `https://recipe-share-platform-backend.vercel.app/recipes/${recipeId}`
-        : "https://recipe-share-platform-backend.vercel.app/recipes";
+        ? `https://recipe-share-platform-backend-2.onrender.com/recipes/${recipeId}`
+        : "https://recipe-share-platform-backend-2.onrender.com/recipes";
+
       const method = recipeId ? "put" : "post";
 
       await axios({
@@ -106,14 +109,10 @@ const CreateRecipe = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      toast.success(
-        recipeId
-          ? "Recipe updated successfully!"
-          : "Recipe added successfully!",
-      );
+      toast.success(recipeId ? "Recipe updated!" : "Recipe created!");
       navigate("/recipe-home");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Error saving recipe");
+      toast.error(err.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -123,228 +122,283 @@ const CreateRecipe = () => {
     <div className="bg-gray-50 min-h-screen">
       <Navbar />
 
-      {/* Hero */}
-      <div className="bg-slate-900 text-white py-12 text-center">
-        <ChefHat className="mx-auto mb-2" size={48} />
-        <h1 className="text-3xl font-bold">
-          {recipeId ? "Edit Recipe" : "Add New Recipe"}
-        </h1>
-        <p className="opacity-90">Share your delicious dish with the world!</p>
-      </div>
+      {/* Main Content Area - Desktop Sidebar width adjustment */}
+      <div className="lg:ml-[280px] transition-all duration-300 pb-20">
+        {/* Header Section */}
+        <div className="bg-orange-500 text-white py-10 px-6 text-center shadow-lg relative">
+          <button
+            onClick={() => navigate(-1)}
+            className="absolute left-6 top-10 p-2 bg-white/20 rounded-full hover:bg-white/30 md:flex hidden"
+          >
+            <ArrowLeft size={20} />
+          </button>
+          <ChefHat className="mx-auto mb-3" size={50} />
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+            {recipeId ? "Update Your Recipe" : "Share Your Recipe"}
+          </h1>
+          <p className="mt-2 text-orange-100">
+            Make the world taste your magic!
+          </p>
+        </div>
 
-      <div className="max-w-3xl mx-auto px-6 py-10">
-        <form onSubmit={onSubmit} className="space-y-6">
-          {/* Basic Info */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">
-              Basic Details
-            </h2>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-600">
-                  Recipe Name
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-3 border rounded-lg mt-1 outline-orange-400"
-                  placeholder="e.g. Butter Chicken"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-600">
-                  Short Description
-                </label>
-                <textarea
-                  className="w-full p-3 border rounded-lg mt-1 outline-orange-400"
-                  rows="3"
-                  placeholder="About this recipe..."
-                  value={instructions}
-                  onChange={(e) => setInstructions(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
+        <div className="max-w-4xl mx-auto px-4 md:px-8 mt-[-30px]">
+          <form onSubmit={onSubmit} className="space-y-8">
+            {/* 1. Basic Info Card */}
+            <div className="bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100">
+              <h2 className="text-xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+                <div className="w-2 h-6 bg-orange-500 rounded-full"></div>{" "}
+                General Information
+              </h2>
 
-          {/* Time & Servings */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white p-4 rounded-xl shadow-sm border flex items-center gap-3">
-              <Clock className="text-orange-500" />
-              <input
-                type="number"
-                placeholder="Time (min)"
-                className="w-full outline-none"
-                value={cookTime}
-                onChange={(e) => setCookTime(e.target.value)}
-              />
-            </div>
-            <div className="bg-white p-4 rounded-xl shadow-sm border flex items-center gap-3">
-              <Users className="text-blue-500" />
-              <input
-                type="number"
-                placeholder="Servings"
-                className="w-full outline-none"
-                value={servings}
-                onChange={(e) => setServings(e.target.value)}
-              />
-            </div>
-          </div>
-
-          {/* Ingredients */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Ingredients</h2>
-              <button
-                type="button"
-                onClick={() => handleAddInput(ingredients, setIngredients)}
-                className="text-orange-500 flex items-center text-sm font-bold"
-              >
-                <Plus size={18} /> Add
-              </button>
-            </div>
-            {ingredients.map((item, index) => (
-              <div key={index} className="flex gap-2 mb-2">
-                <input
-                  type="text"
-                  placeholder={`Ingredient ${index + 1}`}
-                  className="flex-1 p-2 border-b outline-none focus:border-orange-400"
-                  value={item}
-                  onChange={(e) =>
-                    handleInputChange(
-                      index,
-                      e.target.value,
-                      ingredients,
-                      setIngredients,
-                    )
-                  }
-                />
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleRemoveInput(index, ingredients, setIngredients)
-                  }
-                >
-                  <Trash
-                    size={18}
-                    className="text-gray-300 hover:text-red-500"
-                  />
-                </button>
-              </div>
-            ))}
-          </div>
-
-          {/* Steps */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Preparation Steps</h2>
-              <button
-                type="button"
-                onClick={() => handleAddInput(steps, setSteps)}
-                className="text-orange-500 flex items-center text-sm font-bold"
-              >
-                <Plus size={18} /> Add
-              </button>
-            </div>
-            {steps.map((item, index) => (
-              <div key={index} className="flex gap-2 mb-2">
-                <input
-                  type="text"
-                  placeholder={`Step ${index + 1}`}
-                  className="flex-1 p-2 border-b outline-none focus:border-orange-400"
-                  value={item}
-                  onChange={(e) =>
-                    handleInputChange(index, e.target.value, steps, setSteps)
-                  }
-                />
-                <button
-                  type="button"
-                  onClick={() => handleRemoveInput(index, steps, setSteps)}
-                >
-                  <Trash
-                    size={18}
-                    className="text-gray-300 hover:text-red-500"
-                  />
-                </button>
-              </div>
-            ))}
-          </div>
-
-          {/* Media */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border">
-            <h2 className="text-lg font-semibold mb-4">Media (URLs)</h2>
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 border p-2 rounded-lg">
-                <Video className="text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="YouTube Video URL"
-                  className="w-full outline-none"
-                  value={videoTutorial}
-                  onChange={(e) => setVideoTutorial(e.target.value)}
-                />
-              </div>
-
-              {photos.map((url, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2 border p-2 rounded-lg"
-                >
-                  <Image className="text-gray-400" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="md:col-span-2">
+                  <label className="text-sm font-bold text-gray-600 ml-1">
+                    Recipe Title
+                  </label>
                   <input
                     type="text"
-                    placeholder="Photo URL"
-                    className="w-full outline-none"
-                    value={url}
-                    onChange={(e) =>
-                      handleInputChange(
-                        index,
-                        e.target.value,
-                        photos,
-                        setPhotos,
-                      )
-                    }
-                  />
-                  <Trash
-                    size={16}
-                    className="text-gray-300 cursor-pointer"
-                    onClick={() => handleRemoveInput(index, photos, setPhotos)}
+                    className="w-full p-4 border-2 border-gray-50 rounded-2xl mt-1 focus:border-orange-400 outline-none transition-all bg-gray-50/50"
+                    placeholder="e.g. Grandma's Secret Pasta"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
                   />
                 </div>
-              ))}
 
+                <div>
+                  <label className="text-sm font-bold text-gray-600 ml-1">
+                    Recipe Category
+                  </label>
+                  <select
+                    value={Category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="w-full p-4 border-2 border-gray-50 rounded-2xl mt-1 focus:border-orange-400 outline-none transition-all bg-gray-50/50"
+                    required
+                  >
+                    <option value="">Select Category</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Desserts">Desserts</option>
+                    <option value="Quick Snack">Quick Snack</option>
+                  </select>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <label className="text-sm font-bold text-gray-600 ml-1">
+                      Time (Min)
+                    </label>
+                    <div className="flex items-center bg-gray-50/50 border-2 border-gray-50 rounded-2xl px-4 mt-1 focus-within:border-orange-400">
+                      <Clock size={18} className="text-gray-400" />
+                      <input
+                        type="number"
+                        placeholder="30"
+                        className="w-full p-4 bg-transparent outline-none"
+                        value={cookTime}
+                        onChange={(e) => setCookTime(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <label className="text-sm font-bold text-gray-600 ml-1">
+                      Servings
+                    </label>
+                    <div className="flex items-center bg-gray-50/50 border-2 border-gray-50 rounded-2xl px-4 mt-1 focus-within:border-orange-400">
+                      <Users size={18} className="text-gray-400" />
+                      <input
+                        type="number"
+                        placeholder="2"
+                        className="w-full p-4 bg-transparent outline-none"
+                        value={servings}
+                        onChange={(e) => setServings(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="text-sm font-bold text-gray-600 ml-1">
+                    Description
+                  </label>
+                  <textarea
+                    className="w-full p-4 border-2 border-gray-50 rounded-2xl mt-1 focus:border-orange-400 outline-none transition-all bg-gray-50/50"
+                    rows="3"
+                    placeholder="What makes this recipe special?"
+                    value={instructions}
+                    onChange={(e) => setInstructions(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 2. Ingredients Card */}
+            <div className="bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-bold text-gray-800">Ingredients</h2>
+                <button
+                  type="button"
+                  onClick={() => handleAddInput(ingredients, setIngredients)}
+                  className="bg-orange-100 text-orange-600 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-1 hover:bg-orange-200 transition-colors"
+                >
+                  <Plus size={18} /> Add Item
+                </button>
+              </div>
+              <div className="space-y-3">
+                {ingredients.map((item, index) => (
+                  <div key={index} className="flex gap-3 group">
+                    <input
+                      type="text"
+                      placeholder={`Ingredient ${index + 1}`}
+                      className="flex-1 p-3 bg-gray-50 border-none rounded-xl outline-none focus:ring-2 focus:ring-orange-200 transition-all"
+                      value={item}
+                      onChange={(e) =>
+                        handleInputChange(
+                          index,
+                          e.target.value,
+                          ingredients,
+                          setIngredients,
+                        )
+                      }
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleRemoveInput(index, ingredients, setIngredients)
+                      }
+                      className="p-3 text-gray-300 hover:text-red-500 transition-colors"
+                    >
+                      <Trash size={20} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 3. Steps Card */}
+            <div className="bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-bold text-gray-800">
+                  Preparation Steps
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => handleAddInput(steps, setSteps)}
+                  className="bg-orange-100 text-orange-600 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-1 hover:bg-orange-200 transition-colors"
+                >
+                  <Plus size={18} /> Add Step
+                </button>
+              </div>
+              <div className="space-y-4">
+                {steps.map((item, index) => (
+                  <div key={index} className="flex gap-4 items-start group">
+                    <span className="bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mt-2 flex-shrink-0">
+                      {index + 1}
+                    </span>
+                    <textarea
+                      placeholder="Explain this step..."
+                      className="flex-1 p-3 bg-gray-50 border-none rounded-xl outline-none focus:ring-2 focus:ring-orange-200 transition-all"
+                      value={item}
+                      onChange={(e) =>
+                        handleInputChange(
+                          index,
+                          e.target.value,
+                          steps,
+                          setSteps,
+                        )
+                      }
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveInput(index, steps, setSteps)}
+                      className="p-3 text-gray-300 hover:text-red-500 transition-colors"
+                    >
+                      <Trash size={20} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 4. Media Section */}
+            <div className="bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100">
+              <h2 className="text-xl font-bold mb-6 text-gray-800">
+                Media & Links
+              </h2>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-2xl">
+                  <Video className="text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="YouTube URL (Optional)"
+                    className="w-full bg-transparent outline-none"
+                    value={videoTutorial}
+                    onChange={(e) => setVideoTutorial(e.target.value)}
+                  />
+                </div>
+                {photos.map((url, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-3 bg-gray-50 p-4 rounded-2xl"
+                  >
+                    <Image className="text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Photo URL"
+                      className="w-full bg-transparent outline-none"
+                      value={url}
+                      onChange={(e) =>
+                        handleInputChange(
+                          index,
+                          e.target.value,
+                          photos,
+                          setPhotos,
+                        )
+                      }
+                    />
+                    <Trash
+                      size={18}
+                      className="text-gray-300 cursor-pointer hover:text-red-500"
+                      onClick={() =>
+                        handleRemoveInput(index, photos, setPhotos)
+                      }
+                    />
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => handleAddInput(photos, setPhotos)}
+                  className="text-sm font-bold text-orange-500 ml-1"
+                >
+                  + Add more photos
+                </button>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col md:flex-row gap-4">
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 bg-orange-500 text-white py-5 rounded-2xl font-black text-xl hover:bg-orange-600 shadow-lg shadow-orange-200 transition-all disabled:opacity-50"
+              >
+                {loading
+                  ? "Processing..."
+                  : recipeId
+                    ? "Update Recipe"
+                    : "Publish Now"}
+              </button>
               <button
                 type="button"
-                onClick={() => handleAddInput(photos, setPhotos)}
-                className="text-sm text-gray-500 underline"
+                onClick={() => navigate("/recipe-home")}
+                className="px-10 py-5 bg-white border-2 border-gray-100 text-gray-500 rounded-2xl font-bold hover:bg-gray-50 transition-all"
               >
-                + Add another photo URL
+                Cancel
               </button>
             </div>
-          </div>
-
-          {/* Submit */}
-          <div className="flex gap-4">
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 bg-orange-500 text-white py-3 rounded-lg font-bold text-lg hover:bg-orange-600 transition"
-            >
-              {loading
-                ? "Saving..."
-                : recipeId
-                  ? "Update Recipe"
-                  : "Create Recipe"}
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate("/recipes")}
-              className="px-6 py-3 border rounded-lg text-gray-500 hover:bg-gray-100"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

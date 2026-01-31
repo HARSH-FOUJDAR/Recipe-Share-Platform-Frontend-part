@@ -193,7 +193,7 @@ const Navbar = () => {
             <div
               className={`flex items-center gap-3 bg-white/5 p-3 rounded-2xl ${isCollapsed ? "justify-center" : ""}`}
             >
-              <div className="min-w-[36px] h-9 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold">
+              <div className="min-w-[36px] h-12 w-12  rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold">
                 {user.username?.charAt(0).toUpperCase()}
               </div>
               {!isCollapsed && (
@@ -202,15 +202,15 @@ const Navbar = () => {
                     <p className="text-sm font-bold truncate">
                       {user.username}
                     </p>
-                    <p className="text-xs text-gray-500 truncate">
+                    <p className="text-xs text-gray-900 truncate">
                       {user.email}
                     </p>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="text-gray-500 hover:text-red-500 p-1"
+                    className="text-gray-900 cursor-pointer hover:text-red-500 p-1"
                   >
-                    <LogOut size={18} />
+                    <LogOut size={25} />
                   </button>
                 </>
               )}
