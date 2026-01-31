@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
@@ -13,6 +13,7 @@ import {
   ChevronRight,
   Send,
   Share2,
+  PlayCircle, // Video icon ke liye
 } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import { motion, AnimatePresence } from "framer-motion";
@@ -33,9 +34,9 @@ const RecipeDetail = () => {
 
   const API_BASE = "https://recipe-share-platform-backend-2.onrender.com";
   const token = localStorage.getItem("token");
+
   const handleShare = async () => {
     const shareUrl = window.location.href;
-
     if (navigator.share) {
       try {
         await navigator.share({
@@ -71,8 +72,7 @@ const RecipeDetail = () => {
       if (data.isFollowing) setIsFollowing(true);
 
       if (ratingRes.data.rating?.length > 0) {
-        const avg = ratingRes.data.rating.reduce((a, b) => a + b.rating, 0);
-        ratingRes.data.count;
+        const avg = ratingRes.data.rating.reduce((a, b) => a + b.rating, 0) / ratingRes.data.count;
         setAverageRating(avg);
       }
     } catch (err) {
@@ -98,9 +98,7 @@ const RecipeDetail = () => {
         { headers: { Authorization: `Bearer ${token}` } },
       );
       setIsFollowing(!isFollowing);
-      toast.success(
-        isFollowing ? "Unfollowed" : "Added to your following list!",
-      );
+      toast.success(isFollowing ? "Unfollowed" : "Added to your following list!");
     } catch (err) {
       toast.error("Action failed. Try again?");
     } finally {
@@ -129,9 +127,7 @@ const RecipeDetail = () => {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-gray-50">
         <ClipLoader color="#F87171" size={70} />
-        <p className="mt-4 text-gray-500 font-medium italic animate-pulse">
-          Sharpening the knives...
-        </p>
+        <p className="mt-4 text-gray-500 font-medium italic animate-pulse">Sharpening the knives...</p>
       </div>
     );
 
@@ -146,91 +142,54 @@ const RecipeDetail = () => {
           animate={{ opacity: 1, scale: 1 }}
           className="relative h-[450px] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white"
         >
-          <img
-            src={recipe.photos?.[0]}
-            className="w-full h-full object-cover"
-            alt="Delicious Food"
-          />
+          <img src={recipe.photos?.[0]} className="w-full h-full object-cover" alt="Delicious Food" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent" />
           <div className="absolute bottom-8 left-8 right-8 text-white">
             <button
               onClick={handleShare}
-              className="absolute right-5  bottom-75 cursor-pointer bg-white w-15 h-15 text-black justify-center items-center flex rounded-full"
+              className="absolute right-5 bottom-10 cursor-pointer bg-white w-12 h-12 text-black justify-center items-center flex rounded-full shadow-lg hover:scale-110 transition-transform"
             >
-              <Share2 size={30} />
+              <Share2 size={24} />
             </button>
             <div className="flex gap-2 mb-3">
-              <span className="bg-orange-500 px-3 py-1 rounded-full text-xs font-bold uppercase">
-                {recipe.category}
-              </span>
+              <span className="bg-orange-500 px-3 py-1 rounded-full text-xs font-bold uppercase">{recipe.category}</span>
               <span className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs flex items-center gap-1">
                 <Clock size={14} /> {recipe.cookTime} mins
               </span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-extrabold">
-              {recipe.title}
-            </h1>
+            <h1 className="text-4xl md:text-6xl font-extrabold">{recipe.title}</h1>
           </div>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-12">
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-6">
-            {/* Chef Card */}
             <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
               <div className="w-20 h-20 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-3xl font-bold mb-3 uppercase">
                 {recipe.createdBy?.username?.[0]}
               </div>
-              <h3 className="text-xl font-bold">
-                {recipe.createdBy?.username}
-              </h3>
-              <p className="text-sm text-gray-400 mb-5 font-medium italic">
-                Creator of this masterpiece
-              </p>
-
+              <h3 className="text-xl font-bold">{recipe.createdBy?.username}</h3>
+              <p className="text-sm text-gray-400 mb-5 font-medium italic">Creator of this masterpiece</p>
               <button
                 onClick={handleFollow}
                 disabled={followLoading}
                 className={`w-full py-3 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all group ${
-                  isFollowing
-                    ? "bg-gray-100 text-gray-500 hover:bg-red-50 hover:text-red-600"
-                    : "bg-orange-500 text-white shadow-lg shadow-orange-100 hover:bg-orange-600"
+                  isFollowing ? "bg-gray-100 text-gray-500 hover:bg-red-50 hover:text-red-600" : "bg-orange-500 text-white shadow-lg shadow-orange-100 hover:bg-orange-600"
                 }`}
               >
-                {followLoading ? (
-                  <Loader2 className="animate-spin" size={20} />
-                ) : isFollowing ? (
-                  <>
-                    <UserCheck size={20} className="group-hover:hidden" />
-                    <span className="group-hover:hidden">Following</span>
-                    <span className="hidden group-hover:block text-red-600">
-                      Unfollow?
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <UserPlus size={20} /> Follow Chef
-                  </>
-                )}
+                {followLoading ? <Loader2 className="animate-spin" size={20} /> : isFollowing ? <UserCheck /> : <UserPlus />}
+                {isFollowing ? "Following" : "Follow Chef"}
               </button>
             </div>
 
-            {/* Ingredients Card */}
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <Utensils className="text-orange-500" /> Ingredients
               </h2>
               <ul className="space-y-4">
                 {recipe.ingredients?.map((item, i) => (
-                  <li
-                    key={i}
-                    className="flex items-start gap-3 text-gray-600 text-lg"
-                  >
-                    <ChevronRight
-                      className="text-orange-400 mt-1 shrink-0"
-                      size={18}
-                    />{" "}
-                    {item}
+                  <li key={i} className="flex items-start gap-3 text-gray-600 text-lg">
+                    <ChevronRight className="text-orange-400 mt-1 shrink-0" size={18} /> {item}
                   </li>
                 ))}
               </ul>
@@ -239,23 +198,38 @@ const RecipeDetail = () => {
 
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-10">
+            {/* The Process */}
             <section className="bg-white p-10 rounded-3xl shadow-sm border border-gray-100">
-              <h2 className="text-3xl font-bold mb-8 font-serif underline decoration-orange-200 decoration-4">
-                The Process
-              </h2>
+              <h2 className="text-3xl font-bold mb-8 font-serif underline decoration-orange-200 decoration-4">The Process</h2>
               <div className="space-y-8">
                 {recipe.steps?.map((step, idx) => (
                   <div key={idx} className="flex gap-6">
-                    <span className="w-10 h-10 rounded-2xl bg-orange-50 text-orange-500 flex items-center justify-center font-black shrink-0 border border-orange-100">
-                      {idx + 1}
-                    </span>
-                    <p className="text-lg text-gray-700 leading-relaxed pt-1">
-                      {step}
-                    </p>
+                    <span className="w-10 h-10 rounded-2xl bg-orange-50 text-orange-500 flex items-center justify-center font-black shrink-0 border border-orange-100">{idx + 1}</span>
+                    <p className="text-lg text-gray-700 leading-relaxed pt-1">{step}</p>
                   </div>
                 ))}
               </div>
             </section>
+
+            {/* --- VIDEO TUTORIAL SECTION ADDED HERE --- */}
+            {recipe.videoTutorial && (
+              <section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-gray-800">
+                  <PlayCircle className="text-red-500" /> Video Tutorial
+                </h2>
+                <div className="relative rounded-2xl overflow-hidden shadow-inner bg-black aspect-video">
+                  <video
+                    controls
+                    className="w-full h-full"
+                    controlsList="nodownload"
+                    poster={recipe.photos?.[0]} // Video load hone se pehle image dikhegi
+                  >
+                    <source src={recipe.videoTutorial} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </section>
+            )}
 
             {/* Rating Section */}
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 text-center">
@@ -308,16 +282,10 @@ const RecipeDetail = () => {
                       key={c._id}
                       className="p-4 rounded-2xl bg-gray-50 flex gap-4 border border-gray-100"
                     >
-                      <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold uppercase shrink-0">
-                        {c.user?.username?.[0]}
-                      </div>
+                      <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold uppercase shrink-0">{c.user?.username?.[0]}</div>
                       <div>
-                        <p className="font-bold text-gray-800 text-sm">
-                          {c.user?.username}
-                        </p>
-                        <p className="text-gray-600 text-sm leading-snug">
-                          {c.text}
-                        </p>
+                        <p className="font-bold text-gray-800 text-sm">{c.user?.username}</p>
+                        <p className="text-gray-600 text-sm leading-snug">{c.text}</p>
                       </div>
                     </motion.div>
                   ))}
