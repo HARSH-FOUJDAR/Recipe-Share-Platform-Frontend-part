@@ -88,23 +88,51 @@ const RecipeDetail = () => {
     fetchRecipeData();
   }, [fetchRecipeData]);
 
+  useEffect(() => {
+    const checkStatus = async () => {
+      if (token && recipe?.createdBy?._id) {
+        try {
+          const res = await axios.get(
+            `${API_BASE}/follows/following/${currentUser.id}`,
+          );
+          const found = res.data.following.some(
+            (f) => f.following._id === recipe.createdBy._id,
+          );
+          setIsFollowing(found);
+        } catch (err) {
+          console.error("Status check failed");
+        }
+      }
+    };
+    checkStatus();
+  }, [recipe?.createdBy?._id, token, currentUser.id]);
+
   const handleFollow = async () => {
-    if (!token) return toast.info("Please log in to follow creators! ");
+    if (!token) return toast.info("Please log in to follow creators!");
+
+    // Agar khud ki recipe hai toh follow nahi kar sakte
+    if (currentUser.id === recipe.createdBy._id) {
+      return toast.warn("You cannot follow yourself!");
+    }
+
     setFollowLoading(true);
-    const action = isFollowing ? "unfollow" : "follow";
+    // FIX: Backend routes /follow aur /unfollow hain
+    const endpoint = isFollowing ? "unfollow" : "follow";
 
     try {
       await axios.post(
-        `${API_BASE}/follow/${action}`,
+        `${API_BASE}/follows/${endpoint}`,
         { userId: recipe.createdBy._id },
         { headers: { Authorization: `Bearer ${token}` } },
       );
+
       setIsFollowing(!isFollowing);
       toast.success(
         isFollowing ? "Unfollowed" : "Added to your following list!",
       );
     } catch (err) {
-      toast.error("Action failed. Try again?");
+      const msg = err.response?.data?.message || "Action failed";
+      toast.error(msg);
     } finally {
       setFollowLoading(false);
     }
