@@ -33,7 +33,6 @@ const RecipeDetail = () => {
   const API_BASE = "https://recipe-share-platform-backend-2.onrender.com";
   const token = localStorage.getItem("token");
 
-  // --- Data Fetching ---
   const fetchRecipeData = useCallback(async () => {
     try {
       const config = {
@@ -53,9 +52,8 @@ const RecipeDetail = () => {
       if (data.isFollowing) setIsFollowing(true);
 
       if (ratingRes.data.rating?.length > 0) {
-        const avg =
-          ratingRes.data.rating.reduce((a, b) => a + b.rating, 0) 
-          ratingRes.data.count;
+        const avg = ratingRes.data.rating.reduce((a, b) => a + b.rating, 0);
+        ratingRes.data.count;
         setAverageRating(avg);
       }
     } catch (err) {
@@ -68,7 +66,6 @@ const RecipeDetail = () => {
   useEffect(() => {
     fetchRecipeData();
   }, [fetchRecipeData]);
-
 
   const handleFollow = async () => {
     if (!token) return toast.info("Please log in to follow creators! ");
@@ -114,7 +111,7 @@ const RecipeDetail = () => {
       <div className="flex flex-col items-center justify-center h-screen bg-gray-50">
         <ClipLoader color="#F87171" size={70} />
         <p className="mt-4 text-gray-500 font-medium italic animate-pulse">
-          Sharpening the knives... 
+          Sharpening the knives...
         </p>
       </div>
     );

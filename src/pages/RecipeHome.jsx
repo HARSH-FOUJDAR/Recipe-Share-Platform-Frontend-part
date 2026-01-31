@@ -24,7 +24,42 @@ const RecipeHome = () => {
   ];
   const token = localStorage.getItem("token");
 
- 
+  const handleLike = async (e, recipeId) => {
+    e.stopPropagation(); 
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.info("Please login to like");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `https://recipe-share-platform-backend-2.onrender.com/recipes/${recipeId}/like`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      setRecipes((prev) =>
+        prev.map((r) =>
+          r._id === recipeId
+            ? {
+                ...r,
+                like: res.data.liked
+                  ? [...r.like, userId]
+                  : r.like.filter((id) => id !== userId),
+              }
+            : r,
+        ),
+      );
+    } catch (err) {
+      toast.error("Failed to like recipe");
+    }
+  };
+
   const userId = useMemo(() => {
     if (!token) return null;
     try {
@@ -60,7 +95,6 @@ const RecipeHome = () => {
     }
   }, []);
 
-
   const filteredData = recipes.filter((recipe) => {
     const matchesSearch = recipe.title
       .toLowerCase()
@@ -90,7 +124,6 @@ const RecipeHome = () => {
           </div>
         </div>
 
-     
         <div className="max-w-6xl mx-auto mt-10 px-6">
           <div className="flex gap-3 mb-10 overflow-x-auto pb-4 no-scrollbar">
             {categories.map((cat) => (
@@ -140,9 +173,12 @@ const RecipeHome = () => {
                         alt={recipe.title}
                         className="w-full h-56 object-cover"
                       />
-                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                      <div
+                        onClick={(e) => handleLike(e, recipe._id)}
+                        className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 shadow-sm"
+                      >
                         <Heart
-                          size={16}
+                          size={25}
                           className={
                             recipe.like?.includes(userId)
                               ? "text-red-500 fill-red-500"
@@ -180,7 +216,7 @@ const RecipeHome = () => {
               ) : (
                 <div className="col-span-full text-center py-20">
                   <p className="text-gray-400 text-xl italic">
-                    No recipes found. Try a different search or category! 
+                    No recipes found. Try a different search or category!
                   </p>
                 </div>
               )}
