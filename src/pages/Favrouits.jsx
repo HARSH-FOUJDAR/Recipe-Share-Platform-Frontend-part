@@ -23,8 +23,8 @@ const Favrouits = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setRecipes((prev) => prev.filter((favoriteRecipes) => favoriteRecipes._id !== id));
-      toast.success("Recipe deleted successfully");
+      setRecipes((prev) => prev.filter((item) => item._id !== id));
+      toast.success("Recipe Removed successfully");
     } catch (err) {
       toast.error("Failed to delete recipe");
     }

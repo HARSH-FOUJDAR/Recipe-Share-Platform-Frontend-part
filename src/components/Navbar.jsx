@@ -160,7 +160,7 @@ const Navbar = () => {
             if (item.isSpecial && !isCollapsed) {
               return (
                 <Link key={item.label} to={item.path} className="block pt-4">
-                  <div className="bg-emerald-500 text-black px-4 py-3 rounded-xl flex items-center gap-4 font-bold hover:bg-emerald-400 transition-colors">
+                  <div className="bg-orange-500  text-black px-4 py-3 rounded-xl flex items-center gap-4 font-bold hover:bg-orange-400 transition-colors">
                     <Plus size={20} />
                     <span>Create Recipe</span>
                   </div>
@@ -172,7 +172,7 @@ const Navbar = () => {
                 <div
                   className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${
                     isActive
-                      ? "bg-emerald-500/10 text-white"
+                      ? "bg-orange-700 text-white"
                       : "text-gray-900 hover:bg-white/5 hover:text-white"
                   }`}
                 >

@@ -196,7 +196,7 @@ const RecipeHome = () => {
                         className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm cursor-pointer"
                       >
                         <Heart
-                          size={18}
+                          size={30}
                           className={
                             recipe.like?.includes(userId)
                               ? "text-red-500 fill-red-500"
