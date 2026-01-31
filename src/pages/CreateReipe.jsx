@@ -25,7 +25,7 @@ const CreateRecipe = () => {
   const [ingredients, setIngredients] = useState([""]);
   const [steps, setSteps] = useState([""]);
   const [photos, setPhotos] = useState([""]);
-  const [Category, setCategory] = useState("");
+  const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("token");
@@ -56,7 +56,7 @@ const CreateRecipe = () => {
         setIngredients(recipe.ingredients?.length ? recipe.ingredients : [""]);
         setSteps(recipe.steps?.length ? recipe.steps : [""]);
         setPhotos(recipe.photos?.length ? recipe.photos : [""]);
-        setCategory(recipe.Category || "");
+        setCategory(recipe.category || "");
       } catch (err) {
         toast.error("Failed to load recipe data");
       }
@@ -77,7 +77,7 @@ const CreateRecipe = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (!title || !Category) {
+    if (!title || !category) {
       toast.error("Title and Category are required!");
       return;
     }
@@ -93,7 +93,7 @@ const CreateRecipe = () => {
         ingredients,
         steps,
         photos,
-        Category,
+        category,
       };
 
       const url = recipeId
@@ -170,7 +170,7 @@ const CreateRecipe = () => {
                     Recipe Category
                   </label>
                   <select
-                    value={Category}
+                    value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     className="w-full p-4 border-2 border-gray-50 rounded-2xl mt-1 focus:border-orange-400 outline-none transition-all bg-gray-50/50"
                     required
