@@ -2,11 +2,11 @@ import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { Heart, Clock, Search, Star } from "lucide-react"; 
+import { Heart, Clock, Search, Star } from "lucide-react";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import Footer from "../components/Footer";
-
+import { Utensils } from "lucide-react";
 const RecipeHome = () => {
   const navigate = useNavigate();
   const [recipes, setRecipes] = useState([]);
@@ -16,7 +16,6 @@ const RecipeHome = () => {
 
   const token = localStorage.getItem("token");
 
-  // --- Logic remains the same ---
   const handelFavrouit = async (e, recipeId) => {
     e.stopPropagation();
     if (!token) {
@@ -28,7 +27,7 @@ const RecipeHome = () => {
       const res = await axios.post(
         "https://recipe-share-platform-backend-2.onrender.com/Fav/favrouits",
         { recipeId },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       if (res.data.favorited) {
@@ -39,8 +38,8 @@ const RecipeHome = () => {
 
       setRecipes((prev) =>
         prev.map((r) =>
-          r._id === recipeId ? { ...r, isFavrouite: res.data.favorited } : r
-        )
+          r._id === recipeId ? { ...r, isFavrouite: res.data.favorited } : r,
+        ),
       );
     } catch (err) {
       toast.error("Failed to update favorite");
@@ -59,7 +58,7 @@ const RecipeHome = () => {
       const res = await axios.post(
         `https://recipe-share-platform-backend-2.onrender.com/recipes/${recipeId}/like`,
         {},
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       setRecipes((prev) =>
@@ -71,8 +70,8 @@ const RecipeHome = () => {
                   ? [...r.like, userId]
                   : r.like.filter((id) => id !== userId),
               }
-            : r
-        )
+            : r,
+        ),
       );
     } catch (err) {
       toast.error("Failed to like recipe");
@@ -94,7 +93,7 @@ const RecipeHome = () => {
       setLoading(true);
       const response = await axios.get(
         "https://recipe-share-platform-backend-2.onrender.com/recipes",
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       setRecipes(response.data.recipes || response.data);
     } catch (error) {
@@ -125,9 +124,8 @@ const RecipeHome = () => {
     <>
       <div className="bg-gray-50 min-h-screen pb-10 font-sans">
         <Navbar />
-        
-        {/* --- Hero Section: Adjusted padding for mobile --- */}
-        <div className="bg-slate-900 py-12 md:py-20 px-4 text-center text-white">
+
+        <div className="bg-orange-500 py-12 md:py-20 px-4 text-center text-white">
           <h1 className="text-3xl md:text-5xl font-bold mb-6">
             Find Your Favorite Recipes
           </h1>
@@ -139,13 +137,14 @@ const RecipeHome = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Search className="absolute left-4 top-3 md:top-4 text-gray-400" size={20} />
+            <Search
+              className="absolute right-5  top-3 md:top-4 text-gray-600"
+              size={25}
+            />
           </div>
         </div>
 
         <div className="max-w-7xl mx-auto mt-6 md:mt-10 px-4 md:px-6">
-          
-          {/* --- Categories: Horizontal Scroll with hidden scrollbar --- */}
           <div className="flex gap-2 md:gap-3 mb-8 overflow-x-auto pb-2 scrollbar-hide">
             {[
               "All",
@@ -174,7 +173,6 @@ const RecipeHome = () => {
               <ClipLoader color="#f97316" size={50} />
             </div>
           ) : (
-            /* --- Grid: 1 col on mobile, 2 on tablet, 3 on desktop, 4 on large screens --- */
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 md:gap-8">
               {filteredData.length > 0 ? (
                 filteredData.map((recipe) => (
@@ -185,12 +183,14 @@ const RecipeHome = () => {
                   >
                     <div className="relative h-48 md:h-56">
                       <img
-                        src={recipe.photos?.[0] || "https://via.placeholder.com/400x250"}
+                        src={
+                          recipe.photos?.[0] ||
+                          "https://via.placeholder.com/400x250"
+                        }
                         alt={recipe.title}
                         className="w-full h-full object-cover"
                       />
 
-                      {/* Like Button */}
                       <div
                         onClick={(e) => handleLike(e, recipe._id)}
                         className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm cursor-pointer"
@@ -225,7 +225,10 @@ const RecipeHome = () => {
                           </span>
                         </div>
                         <p className="text-xs md:text-sm font-semibold text-gray-400">
-                          By <span className="text-gray-600">{recipe.createdBy?.username || "Chef"}</span>
+                          By{" "}
+                          <span className="text-gray-600">
+                            {recipe.createdBy?.username || "Chef"}
+                          </span>
                         </p>
                       </div>
 
@@ -241,7 +244,9 @@ const RecipeHome = () => {
                           size={16}
                           fill={recipe.isFavrouite ? "white" : "none"}
                         />
-                        {recipe.isFavrouite ? "Remove Favorite" : "Add to Favorites"}
+                        {recipe.isFavrouite
+                          ? "Remove Favorite"
+                          : "Add to Favorites"}
                       </button>
                     </div>
                   </div>

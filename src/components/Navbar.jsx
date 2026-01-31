@@ -82,7 +82,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="lg:hidden fixed top-0 left-0 right-0 bg-slate-900 text-white p-4 flex justify-between items-center z-[60] border-b border-white/10">
+      <div className="lg:hidden fixed top-0 left-0 right-0 bg-orange-400 text-white p-4 flex justify-between items-center z-[60] border-b border-white/10">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-white">
             <ChefHat size={18} />
@@ -91,12 +91,12 @@ const Navbar = () => {
             Recipe<span className="text-red-500">Nest</span>
           </span>
         </div>
-        <button onClick={handleLogout} className="text-gray-400">
-          <LogOut size={20} />
+        <button onClick={handleLogout} className="text-gray-800">
+          <LogOut size={25} />
         </button>
       </div>
 
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-white/10 flex justify-around items-center py-2 px-1 z-[60] backdrop-blur-lg bg-opacity-95">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-orange-400 border-t border-white/10 flex justify-around items-center py-2 px-1 z-[60] backdrop-blur-lg bg-opacity-95">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
@@ -111,13 +111,13 @@ const Navbar = () => {
                     ? item.isSpecial
                       ? "bg-emerald-500 text-black"
                       : "text-emerald-500"
-                    : "text-gray-400"
+                    : "text-gray-600"
                 } ${item.isSpecial && !isActive ? "bg-slate-800 text-emerald-500" : ""}`}
               >
                 {item.icon}
               </div>
               <span
-                className={`text-[10px] ${isActive ? "text-emerald-500 font-bold" : "text-gray-500"}`}
+                className={`text-[10px] ${isActive ? "text-emerald-500 font-bold" : "text-gray-900"}`}
               >
                 {item.label}
               </span>
