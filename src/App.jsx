@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
 import RecipeHome from "./pages/RecipeHome";
 import MyRecipe from "./pages/MyRecipe";
+import Favrouits from "./pages/Favrouits";
 const App = () => {
   return (
     <BrowserRouter>
@@ -29,7 +30,7 @@ const App = () => {
         <Route path="/recipe/:id" element={<RecipeDetail />} />
         <Route path="/meal-planner" element={<MealPlanner />} />
         <Route path="/profile" element={<Profile />} />
-
+         <Route path="/favrouits" element={<Favrouits />} />
         <Route path="/recipe-my" element={<MyRecipe />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/recipe-home" element={<RecipeHome />} />

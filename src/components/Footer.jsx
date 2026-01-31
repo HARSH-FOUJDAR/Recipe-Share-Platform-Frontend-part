@@ -121,13 +121,12 @@ const Footer = () => {
             <p className="text-gray-500 mb-4 text-sm">
               Nayi recipes ki update pane ke liye subscribe karein.
             </p>
-        
           </div>
         </div>
 
         {/* BOTTOM BAR */}
         <div className="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-          <p>© 2026 RecipeShare. All rights reserved.</p>
+          <p>© 2026 RecipeNest. All rights reserved.</p>
           <div className="flex gap-8">
             <a href="#" className="hover:text-red-500">
               Privacy Policy

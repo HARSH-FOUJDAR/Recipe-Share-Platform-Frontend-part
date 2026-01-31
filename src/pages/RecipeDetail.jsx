@@ -260,7 +260,7 @@ const RecipeDetail = () => {
                     controls
                     className="w-full h-full"
                     controlsList="nodownload"
-                    poster={recipe.photos?.[0]} // Video load hone se pehle image dikhegi
+                    poster={recipe.photos?.[0]}
                   >
                     <source src={recipe.videoTutorial} type="video/mp4" />
                     Your browser does not support the video tag.
