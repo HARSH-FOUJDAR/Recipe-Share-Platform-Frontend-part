@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { Heart, Clock, Search, Star } from "lucide-react";
+import { Heart, Clock, Search, Star, ArrowRight } from "lucide-react";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import Footer from "../components/Footer";
@@ -181,7 +181,7 @@ const RecipeHome = () => {
                     onClick={() => navigate(`/recipe/${recipe._id}`)}
                     className="bg-white rounded-2xl md:rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
                   >
-                    <div className="relative h-48 md:h-56">
+                    <div className="relative h-48 md:h-56 cursor-pointer">
                       <img
                         src={
                           recipe.photos?.[0] ||
@@ -190,7 +190,7 @@ const RecipeHome = () => {
                         alt={recipe.title}
                         className="w-full h-full object-cover"
                       />
-
+        
                       <div
                         onClick={(e) => handleLike(e, recipe._id)}
                         className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm cursor-pointer"
