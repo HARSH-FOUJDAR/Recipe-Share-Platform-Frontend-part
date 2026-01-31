@@ -34,7 +34,8 @@ const RecipeDetail = () => {
 
   const API_BASE = "https://recipe-share-platform-backend-2.onrender.com";
   const token = localStorage.getItem("token");
-
+  const userString = localStorage.getItem("user");
+  const currentUser = userString ? JSON.parse(userString) : null;
   const handleShare = async () => {
     const shareUrl = window.location.href;
     if (navigator.share) {
@@ -90,13 +91,13 @@ const RecipeDetail = () => {
 
   useEffect(() => {
     const checkStatus = async () => {
-      if (token && recipe?.createdBy?._id) {
+      if (token && currentUser?.id && recipe?.createdBy?._id) {
         try {
           const res = await axios.get(
             `${API_BASE}/follows/following/${currentUser.id}`,
           );
           const found = res.data.following.some(
-            (f) => f.following._id === recipe.createdBy._id,
+            (f) => (f.following._id || f.following) === recipe.createdBy._id,
           );
           setIsFollowing(found);
         } catch (err) {
@@ -104,19 +105,19 @@ const RecipeDetail = () => {
         }
       }
     };
-    checkStatus();
-  }, [recipe?.createdBy?._id, token, currentUser.id]);
+    if (recipe) checkStatus();
+  }, [recipe, token, currentUser?.id]);
 
   const handleFollow = async () => {
     if (!token) return toast.info("Please log in to follow creators!");
+    if (!currentUser)
+      return toast.error("User profile not found. Please re-login.");
 
-    // Agar khud ki recipe hai toh follow nahi kar sakte
     if (currentUser.id === recipe.createdBy._id) {
       return toast.warn("You cannot follow yourself!");
     }
 
     setFollowLoading(true);
-    // FIX: Backend routes /follow aur /unfollow hain
     const endpoint = isFollowing ? "unfollow" : "follow";
 
     try {
@@ -137,7 +138,6 @@ const RecipeDetail = () => {
       setFollowLoading(false);
     }
   };
-
   const submitComment = async (e) => {
     e.preventDefault();
     if (!commentText.trim()) return;
