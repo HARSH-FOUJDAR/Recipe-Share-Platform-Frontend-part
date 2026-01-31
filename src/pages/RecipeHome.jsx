@@ -151,7 +151,7 @@ const RecipeHome = () => {
               "Breakfast",
               "Lunch",
               "Dinner",
-              "Desserts",
+              "Dessert",
               "Quick Snack",
             ].map((cat) => (
               <button

@@ -14,6 +14,22 @@ const Favrouits = () => {
   const API_BASE = "https://recipe-share-platform-backend-2.onrender.com";
   const token = localStorage.getItem("token");
 
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this recipe?")) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`${API_BASE}/fav/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setRecipes((prev) => prev.filter((favoriteRecipes) => favoriteRecipes._id !== id));
+      toast.success("Recipe deleted successfully");
+    } catch (err) {
+      toast.error("Failed to delete recipe");
+    }
+  };
+
   const fetchFavorites = async () => {
     if (!token) {
       toast.warn("Please login to see your favorites");
@@ -117,7 +133,7 @@ const Favrouits = () => {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
                     <button
-                      onClick={(e) => removeFavorite(e, recipe._id)}
+                      onClick={handleDelete}
                       className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-full text-red-500 shadow-lg hover:bg-red-500 hover:text-white transition-all"
                     >
                       <Trash2 size={20} />

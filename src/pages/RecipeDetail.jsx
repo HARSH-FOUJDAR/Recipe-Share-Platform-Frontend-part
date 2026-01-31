@@ -13,7 +13,7 @@ import {
   ChevronRight,
   Send,
   Share2,
-  PlayCircle, // Video icon ke liye
+  PlayCircle,
 } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import { motion, AnimatePresence } from "framer-motion";

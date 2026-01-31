@@ -179,7 +179,7 @@ const CreateRecipe = () => {
                     <option value="Breakfast">Breakfast</option>
                     <option value="Lunch">Lunch</option>
                     <option value="Dinner">Dinner</option>
-                    <option value="Desserts">Desserts</option>
+                    <option value="Dessert">Desserts</option>
                     <option value="Quick Snack">Quick Snack</option>
                   </select>
                 </div>
