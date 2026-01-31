@@ -119,7 +119,7 @@ const handleShare = async () => {
       );
       setComments([res.data.comment, ...comments]);
       setCommentText("");
-      toast.success("Review added! 🍜");
+      toast.success("Review added! ");
     } catch (err) {
       toast.error("Could not post review.");
     }
