@@ -265,7 +265,7 @@ const handleShare = async () => {
                     key={s}
                     onMouseEnter={() => setHoverStar(s)}
                     onMouseLeave={() => setHoverStar(0)}
-                    onClick={() => setUserRating(s)} // Add actual API logic here if needed
+                    onClick={() => setUserRating(s)}
                   >
                     <Star
                       size={35}
