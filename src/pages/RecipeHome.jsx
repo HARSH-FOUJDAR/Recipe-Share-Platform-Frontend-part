@@ -190,7 +190,7 @@ const RecipeHome = () => {
                         alt={recipe.title}
                         className="w-full h-full object-cover"
                       />
-        
+
                       <div
                         onClick={(e) => handleLike(e, recipe._id)}
                         className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm cursor-pointer"

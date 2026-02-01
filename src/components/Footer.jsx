@@ -12,17 +12,17 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-orange-500 border-t border-gray-100 pt-16 pb-8">
+    <footer className="bg-white border-t border-gray-100 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* 1. BRAND SECTION */}
           <div className="space-y-6">
             <div className="flex items-center gap-2">
-              <div className="bg-red-500 p-2 rounded-xl">
-                <Utensils className="text-black" size={24} />
+              <div className="bg-orange-500 p-2 rounded-xl">
+                <Utensils className="text-white" size={24} />
               </div>
               <span className="text-2xl font-black tracking-tight text-gray-800">
-                Recipe<span className="text-red-500">Nest</span>
+                Recipe<span className="text-white relative left-2">Nest</span>
               </span>
             </div>
             <p className="text-gray-900 leading-relaxed">

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { LuNotebookPen } from "react-icons/lu";
 import axios from "axios";
 import {
   LayoutDashboard,
@@ -12,7 +13,6 @@ import {
   ChevronLeft,
   Loader2,
   Star,
-  Settings,
 } from "lucide-react";
 
 const Navbar = () => {
@@ -70,6 +70,11 @@ const Navbar = () => {
       isSpecial: true,
     },
     { icon: <Star size={22} />, label: "Favorites", path: "/favrouits" },
+    {
+      icon: <LuNotebookPen size={22} />,
+      label: "Meal Plan",
+      path: "/meal-planner",
+    },
     { icon: <User size={22} />, label: "Profile", path: "/profile" },
   ];
 
