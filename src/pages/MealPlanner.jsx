@@ -324,6 +324,10 @@ const MealPlanner = () => {
                         ?.ingredients?.map((ing, i) => (
                           <span
                             key={i}
+
+
+
+                            
                             className="text-md bg-white border px-5 py-2 rounded text-slate-600"
                           >
                             {ing}
