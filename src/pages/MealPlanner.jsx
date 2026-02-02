@@ -32,13 +32,13 @@ const MealPlanner = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-          },
+          }
         },
       );
       toast.success(res.data);
       setRecipes(res.data.recipes || res.data);
-    } catch (err) {
-      console.log(err, "Data failed ");
+    }catch (err) {
+      console.log(err);
     }
   };
   useEffect(() => {
@@ -324,10 +324,6 @@ const MealPlanner = () => {
                         ?.ingredients?.map((ing, i) => (
                           <span
                             key={i}
-
-
-
-                            
                             className="text-md bg-white border px-5 py-2 rounded text-slate-600"
                           >
                             {ing}
