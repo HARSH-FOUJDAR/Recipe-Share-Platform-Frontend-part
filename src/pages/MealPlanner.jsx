@@ -9,6 +9,7 @@ import {
   FaStickyNote,
 } from "react-icons/fa";
 import { Loader2 } from "lucide-react";
+import axios from "axios";
 
 const MealPlanner = () => {
   const [date, setDate] = useState("");
@@ -19,9 +20,30 @@ const MealPlanner = () => {
   const [mealPlans, setMealPlans] = useState([]);
   const [editPlanId, setEditPlanId] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [recipes, setRecipes] = useState([]);
   const API_BASE = "https://recipe-share-platform-backend.vercel.app/meals";
   const token = localStorage.getItem("token");
+
+  const fetchRecipe = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(
+        "https://recipe-share-platform-backend.vercel.app/recipes/myRecipe",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      toast.success(res.data);
+      setRecipes(res.data.recipes || res.data);
+    } catch (err) {
+      console.log(err, "Data failed ");
+    }
+  };
+  useEffect(() => {
+    fetchRecipe();
+  }, []);
 
   const fetchMealPlans = async () => {
     try {
@@ -98,6 +120,13 @@ const MealPlanner = () => {
     }
   };
 
+  const Ingredients = (selectedRecipeName) => {
+    const recipe = recipes.find(
+      (r) => (r.title || r.name) === selectedRecipeName,
+    );
+    return recipe ? recipe.ingredients : [];
+  };
+
   const handleEdit = (plan) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setEditPlanId(plan._id);
@@ -124,44 +153,119 @@ const MealPlanner = () => {
           </h1>
         </header>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid  gap-8">
           {/* FORM */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-2">
             <div className="bg-white p-6 rounded-2xl shadow-md sticky top-8 border border-slate-100">
               <h2 className="text-lg font-bold mb-4 border-b pb-2">
                 {editPlanId ? "Edit Plan" : "New Plan"}
               </h2>
               <div className="space-y-4">
+                <label className="text-sm font-bold text-slate-600 block mb-1">
+                  Date
+                </label>
                 <input
                   type="date"
-                  className="w-full p-2 bg-slate-50 border rounded-lg"
+                  className="w-full p-3 bg-orange-50 border border-orange-100 rounded-xl focus:ring-2 focus:ring-orange-400 outline-none"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                 />
-                <input
-                  type="text"
-                  placeholder="Breakfast"
-                  className="w-full p-2 bg-slate-50 border rounded-lg"
-                  value={breakfast}
-                  onChange={(e) => setBreakfast(e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="Lunch"
-                  className="w-full p-2 bg-slate-50 border rounded-lg"
-                  value={lunch}
-                  onChange={(e) => setLunch(e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="Dinner"
-                  className="w-full p-2 bg-slate-50 border rounded-lg"
-                  value={dinner}
-                  onChange={(e) => setDinner(e.target.value)}
-                />
+                <div className="mb-4">
+                  <label className="text-sm font-bold text-slate-600 block mb-1">
+                    BreakFast
+                  </label>
+                  <select
+                    className="w-full p-3 bg-orange-50 border border-orange-100 rounded-xl focus:ring-2 focus:ring-orange-400 outline-none"
+                    value={breakfast}
+                    onChange={(e) => setBreakfast(e.target.value)}
+                  >
+                    <option value="">Select Breakfast</option>
+                    {recipes.map((r) => (
+                      <option key={r._id} value={r.title || r.name}>
+                        {r.title || r.name}
+                      </option>
+                    ))}
+                  </select>
+                  {breakfast && (
+                    <div className="mt-2 p-3 bg-white border border-orange-100 rounded-lg shadow-sm">
+                      <p className="text-xs font-bold text-orange-600 uppercase mb-1">
+                        Ingredients Needed:
+                      </p>
+                      <ul className="text-xs text-slate-600 list-disc ml-4">
+                        {Ingredients(breakfast).map((ing, index) => (
+                          <li key={index}>{ing}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mb-4">
+                  <label className="text-sm font-bold text-slate-600 block mb-1">
+                    Lunch
+                  </label>
+                  <select
+                    className="w-full p-3 bg-orange-50 border border-orange-100 rounded-xl focus:ring-2 focus:ring-orange-400 outline-none"
+                    value={lunch}
+                    onChange={(e) => setLunch(e.target.value)}
+                  >
+                    <option value="">Select Lunch</option>
+                    {recipes.map((r) => (
+                      <option key={r._id} value={r.title || r.name}>
+                        {r.title || r.name}
+                      </option>
+                    ))}
+                  </select>
+                  {lunch && (
+                    <div className="mt-2 p-3 bg-white border border-orange-100 rounded-lg shadow-sm">
+                      <p className="text-xs font-bold text-orange-600 uppercase mb-1">
+                        Ingredients Needed:
+                      </p>
+                      <ul className="text-xs text-slate-600 list-disc ml-4">
+                        {Ingredients(lunch).map((ing, index) => (
+                          <li key={index}>{ing}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mb-4">
+                  <label className="text-sm font-bold text-slate-600 block mb-1">
+                    Dinner
+                  </label>
+                  <select
+                    className="w-full p-3 bg-orange-50 border border-orange-100 rounded-xl focus:ring-2 focus:ring-orange-400 outline-none"
+                    value={dinner}
+                    onChange={(e) => setDinner(e.target.value)}
+                  >
+                    <option value="">Select Dinner</option>
+                    {recipes.map((r) => (
+                      <option key={r._id} value={r.title || r.name}>
+                        {r.title || r.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  {dinner && (
+                    <div className="mt-2 p-3 bg-white border border-orange-100 rounded-lg shadow-sm">
+                      <p className="text-xs font-bold text-orange-600 uppercase mb-1">
+                        Ingredients Needed:
+                      </p>
+                      <ul className="text-xs text-slate-600 list-disc ml-4">
+                        {Ingredients(dinner).map((ing, index) => (
+                          <li key={index}>{ing}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+                <label className="text-sm font-bold text-slate-600 block mb-1">
+                  Note
+                </label>
                 <textarea
                   placeholder="Notes"
-                  className="w-full p-2 bg-slate-50 border rounded-lg"
+                  className="w-full p-3 bg-orange-50 border border-orange-100 rounded-xl focus:ring-2 focus:ring-orange-400 outline-none"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                 />
@@ -184,11 +288,11 @@ const MealPlanner = () => {
           </div>
 
           {/* LIST */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="lg:col-span-3 space-y-6">
             {mealPlans.map((plan) => (
               <div
                 key={plan._id}
-                className="bg-white p-5 rounded-2xl shadow-sm border group"
+                className="bg-white p-6 rounded-2xl shadow-sm border group"
               >
                 <div className="flex justify-between items-center mb-3">
                   <span className="font-bold text-indigo-600">
@@ -212,12 +316,55 @@ const MealPlanner = () => {
                 <div className="grid grid-cols-3 gap-2 text-sm">
                   <div className="p-2 bg-slate-50 rounded-lg">
                     <strong>B:</strong> {plan.meals.breakfast}
+                    <div className="mt-5 flex flex-wrap gap-3">
+                      {recipes
+                        .find(
+                          (r) => (r.title || r.name) === plan.meals.breakfast,
+                        )
+                        ?.ingredients?.map((ing, i) => (
+                          <span
+                            key={i}
+                            className="text-md bg-white border px-5 py-2 rounded text-slate-600"
+                          >
+                            {ing}
+                          </span>
+                        ))}
+                    </div>
                   </div>
+
                   <div className="p-2 bg-slate-50 rounded-lg">
                     <strong>L:</strong> {plan.meals.lunch}
+                    <div className="mt-2 flex flex-wrap gap-3">
+                      {recipes
+                        .find(
+                          (r) => (r.title || r.name) === plan.meals.breakfast,
+                        )
+                        ?.ingredients?.map((ing, i) => (
+                          <span
+                            key={i}
+                            className="text-md bg-white border px-1.5 py-0.5 rounded text-slate-500"
+                          >
+                            {ing}
+                          </span>
+                        ))}
+                    </div>
                   </div>
                   <div className="p-2 bg-slate-50 rounded-lg">
                     <strong>D:</strong> {plan.meals.dinner}
+                    <div className="mt-2 flex flex-wrap gap-3">
+                      {recipes
+                        .find(
+                          (r) => (r.title || r.name) === plan.meals.breakfast,
+                        )
+                        ?.ingredients?.map((ing, i) => (
+                          <span
+                            key={i}
+                            className="text-md bg-white border px-1.5 py-0.5 rounded text-slate-500"
+                          >
+                            {ing}
+                          </span>
+                        ))}
+                    </div>
                   </div>
                 </div>
               </div>

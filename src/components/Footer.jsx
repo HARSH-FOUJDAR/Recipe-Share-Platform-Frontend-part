@@ -115,7 +115,6 @@ const Footer = () => {
             </ul>
           </div>
 
-       
           <div>
             <h4 className="text-lg font-bold text-gray-800 mb-6">Newsletter</h4>
             <p className="text-gray-900 mb-4 text-sm">

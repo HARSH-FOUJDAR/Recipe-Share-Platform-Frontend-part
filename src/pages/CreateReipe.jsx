@@ -382,7 +382,6 @@ const CreateRecipe = () => {
             {/* Action Buttons */}
             <div className="flex flex-col md:flex-row gap-4">
               <button
-                type="submit"
                 disabled={loading}
                 className="flex-1 bg-orange-500 text-white py-5 rounded-2xl font-black text-xl hover:bg-orange-600 shadow-lg shadow-orange-200 transition-all disabled:opacity-50"
               >
