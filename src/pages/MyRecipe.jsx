@@ -96,7 +96,7 @@ const MyRecipe = () => {
         {recipes.length === 0 ? (
           <div className="text-center mt-10">
             <p className="text-gray-500 text-xl italic">
-              You haven’t created any recipes yet 🍳
+              You haven’t created any recipes yet 
             </p>
             <button
               onClick={() => navigate("/recipes")}
