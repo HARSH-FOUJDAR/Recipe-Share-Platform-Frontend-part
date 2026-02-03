@@ -28,16 +28,16 @@ const MealPlanner = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "https://recipe-share-platform-backend.vercel.app/recipes/myRecipe",
+        "https://recipe-share-platform-backend.vercel.app/recipes/",
         {
           headers: {
             Authorization: `Bearer ${token}`,
-          }
+          },
         },
       );
       toast.success(res.data);
       setRecipes(res.data.recipes || res.data);
-    }catch (err) {
+    } catch (err) {
       console.log(err);
     }
   };
