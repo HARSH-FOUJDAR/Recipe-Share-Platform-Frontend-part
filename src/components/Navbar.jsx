@@ -43,7 +43,7 @@ const Navbar = () => {
         );
       } catch (err) {
         localStorage.removeItem("token");
-        navigate("/login");
+        navigate("/");
       } finally {
         setLoading(false);
       }

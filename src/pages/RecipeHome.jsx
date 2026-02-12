@@ -115,7 +115,7 @@ const RecipeHome = () => {
     const matchesSearch = recipe.title
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
-    const matchesCategory =
+      const matchesCategory =
       activeCategory === "All" || recipe.category === activeCategory;
     return matchesSearch && matchesCategory;
   });
