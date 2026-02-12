@@ -14,6 +14,7 @@ import {
   Loader2,
   Star,
 } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const Navbar = () => {
       } catch (err) {
         localStorage.removeItem("token");
         navigate("/");
+        toast.error("Session expired. Please login again.");
       } finally {
         setLoading(false);
       }
