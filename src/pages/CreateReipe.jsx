@@ -164,7 +164,6 @@ const CreateRecipe = () => {
                     required
                   />
                 </div>
-
                 <div>
                   <label className="text-sm font-bold text-gray-600 ml-1">
                     Recipe Category
