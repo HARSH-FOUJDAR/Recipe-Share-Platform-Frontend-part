@@ -21,7 +21,7 @@ const HomeNavbar = () => {
 
         <Link
           to="/register"
-          className="bg-red-600 hover:bg-red-800 text-white px-6 py-2 rounded-full text-sm font-semibold"
+          className="bg-red-600 hover:bg-red-800 text-white px-6 flex py-1 rounded-full text-sm font-semibold"
         >
           Sign up
         </Link>
