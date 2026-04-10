@@ -20,7 +20,7 @@ const Home = () => {
         );
         setRecipe(res.data || []);
       } catch (error) {
-        toast.error("Could not load recipes.");
+        // toast.error("Could not load recipes.");
       } finally {
         setLoading(false);
       }
