@@ -16,11 +16,11 @@ const Home = () => {
     const fetchRecipe = async () => {
       try {
         const res = await axios.get(
-          // "https://recipe-share-platform-backend-2.onrender.com/recipes",
+          "https://recipe-share-platform-backend-2.onrender.com/recipes",
         );
         setRecipe(res.data || []);
       } catch (error) {
-        // toast.error("Could not load recipes.");
+        toast.error("Could not load recipes.");
       } finally {
         setLoading(false);
       }
