@@ -26,6 +26,9 @@ const Home = () => {
       }
     };
     fetchRecipe();
+
+
+    
   }, []);
 
   const handleView = (recipeId) => {
