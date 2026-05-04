@@ -49,9 +49,9 @@ const Home = () => {
 
   return (
     <>
-      <div className="bg-[#FAFAFA] min-h-screen font-sans selection:bg-orange-500">
+      <div className="min-h-screen font-sans selection:bg-orange-500">
         {/* HERO SECTION */}
-        <section className="relative  bg-orange-500 pb-20 border-b border-gray-100 shadow-sm overflow-hidden">
+        <section className="relative   pb-20 border-b border-gray-100 shadow-sm overflow-hidden">
           <video
             src="https://www.inspiredtaste.net/wp-content/uploads/2026/04/Thai-Chicken-Salad-Pro.webm"
             autoPlay
@@ -61,50 +61,47 @@ const Home = () => {
           />
           <HomeNavar />
           <div className="max-w-7xl mx-auto px-6 pt-12 lg:pt-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center z-10 relative">
-            <motion.div
-              initial={{ x: -50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              className="text-center lg:text-left z-10"
-            >
-              <span className="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-wider text-orange-600 uppercase bg-orange-50 rounded-full">
+            <div className="max-w-lg mx-auto lg:mx-0 text-center lg:text-left">
+              <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-orange-600 uppercase bg-orange-100 rounded-full">
                 Discover & Share
               </span>
-              <h1 className="text-6xl lg:text-7xl font-extrabold mb-6 tracking-tight text-gray-900">
-                Cook Like a <span className="text-gray-900">Pro</span>
+              <h1 className="text-5xl lg:text-7xl font-extrabold mb-6 tracking-tight text-gray-900 leading-tight">
+                Cook Like a <span className="text-orange-600">Pro</span>
               </h1>
-              <p className="text-gray-900 max-w-lg mb-10 text-lg leading-relaxed mx-auto lg:mx-0">
-                Join a global community of foodies. Explore hand-picked recipes
-                that bring restaurant-quality flavors to your kitchen.
+              <p className="text-gray-600 mb-10 text-lg leading-relaxed">
+                Join our global community of food enthusiasts. Explore
+                hand-picked recipes that bring restaurant-quality flavors
+                directly to your home kitchen.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <button
+                  className="px-8 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition duration-200"
                   onClick={() => navigate("/login")}
-                  className="group flex items-center justify-center gap-2 bg-gray-900 text-white font-bold px-8 py-4 rounded-2xl hover:bg-red-600 transition-all duration-300 shadow-lg shadow-gray-200"
                 >
-                  Start Cooking{" "}
-                  <ArrowRight
-                    size={18}
-                    className="group-hover:translate-x-1 transition-transform"
-                  />
+                  Explore Recipes
+                </button>
+                <button className="px-8 py-3 bg-gray-100 text-gray-900 font-semibold rounded-lg hover:bg-gray-200 transition duration-200">
+                  Join Community
                 </button>
               </div>
-            </motion.div>
-          </div>
-          <section className="py-10   flex items-center justify-center bg-orange-300">
-            <div className=" items-center py-2 px-4  hidden md:flex">
-              <FaSearch className="text-gray-500  text-2xl relative left-10 " />
-              <input
-                type="text"
-                className="border-2 border-gray-300 rounded-2xl py-3 px-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-              <button className="bg-orange-500 px-10 py-3 text-white font-bold text-xl rounded-2xl ml-3">
-                Search
-              </button>
             </div>
-          </section>
+          </div>
         </section>
-    
+        <section className="py-20 flex flex-col items-center justify-center bg-orange-100">
+          <div className="items-center py-2 px-4 hidden md:flex mb-10">
+            <FaSearch className="text-gray-500 text-2xl relative left-10" />
+
+            <input
+              type="text"
+              placeholder="Search recipes..."
+              className="border-2 border-orange-500 rounded-2xl w-[600px] px-20 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+
+            <button className="bg-orange-500 cursor-pointer px-10 py-3 text-white font-bold text-xl rounded-2xl ml-3">
+              Search
+            </button>
+          </div>
+        </section>
         {/* RECIPES SECTION */}
         <section className=" bg-orange-200 min-h-screen py-20">
           <div className=" mx-auto px-70 ">
