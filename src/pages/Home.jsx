@@ -120,7 +120,7 @@ const Home = () => {
           </div>
         </section>
         {/* RECIPES SECTION */}
-        <section className=" bg-orange-200 ">
+        <section className=" bg-orange-200 min-h-screen py-20">
           <div className=" mx-auto px-70 ">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
               <div className="flex flex-col text-center items-center mx-auto justify-center md:justify-start">
@@ -231,6 +231,7 @@ const Home = () => {
         }
       `}</style>
       </div>
+
       <Footer></Footer>
     </>
   );
