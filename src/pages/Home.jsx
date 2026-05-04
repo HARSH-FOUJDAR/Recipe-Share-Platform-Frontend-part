@@ -120,8 +120,8 @@ const Home = () => {
           </div>
         </section>
         {/* RECIPES SECTION */}
-        <section className=" bg-orange-200">
-          <div className=" mx-auto px-70">
+        <section className=" bg-orange-200 ">
+          <div className=" mx-auto px-70 ">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
               <div className="flex flex-col text-center items-center mx-auto justify-center md:justify-start">
                 <h2 className="text-4xl font-bold text-gray-900">
