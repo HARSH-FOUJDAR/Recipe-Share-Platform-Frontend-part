@@ -104,21 +104,7 @@ const Home = () => {
             </div>
           </section>
         </section>
-        <section className="py-20 flex flex-col items-center justify-center bg-orange-200">
-          <div className="items-center py-2 px-4 hidden md:flex mb-10">
-            <FaSearch className="text-gray-500 text-2xl relative left-10" />
-
-            <input
-              type="text"
-              placeholder="Search recipes..."
-              className="border-2 border-orange-500 rounded-2xl w-[600px] px-20 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            />
-
-            <button className="bg-orange-500 cursor-pointer px-10 py-3 text-white font-bold text-xl rounded-2xl ml-3">
-              Search
-            </button>
-          </div>
-        </section>
+    
         {/* RECIPES SECTION */}
         <section className=" bg-orange-200 min-h-screen py-20">
           <div className=" mx-auto px-70 ">
