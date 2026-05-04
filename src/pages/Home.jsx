@@ -87,21 +87,60 @@ const Home = () => {
             </div>
           </div>
         </section>
-        <section className="py-20 flex flex-col items-center justify-center bg-orange-100">
-          <div className="items-center py-2 px-4 hidden md:flex mb-10">
-            <FaSearch className="text-gray-500 text-2xl relative left-10" />
+        <section className="py-20 flex flex-col items-center justify-center bg-orange-100/50">
+          {/* Search Bar Container */}
+          <div className="flex items-center w-full max-w-2xl px-4 mb-16">
+            <div className="relative flex items-center w-full">
+              <FaSearch className="absolute left-6 text-gray-400 text-xl" />
+              <input
+                type="text"
+                placeholder="Search for delicious recipes..."
+                className="w-full border-2 border-orange-300 rounded-2xl pl-14 pr-6 py-4 focus:outline-none focus:ring-4 focus:ring-orange-500/20 shadow-sm"
+              />
+              <button className="absolute right-2 bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-2.5 rounded-xl transition duration-200">
+                Search
+              </button>
+            </div>
+          </div>
 
-            <input
-              type="text"
-              placeholder="Search recipes..."
-              className="border-2 border-orange-500 rounded-2xl w-[600px] px-20 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            />
+          {/* Content Wrapper */}
+          <div className="flex flex-col lg:flex-row items-center gap-12 px-6 max-w-6xl">
+            {/* Main Image */}
+            <div className="w-full lg:w-1/2">
+              <img
+                src="https://recipekeeperonline.com/Images/en/laptopphone.png"
+                alt="App display on laptop and phone"
+                className="rounded-3xl shadow-2xl w-full"
+              />
+            </div>
 
-            <button className="bg-orange-500 cursor-pointer px-10 py-3 text-white font-bold text-xl rounded-2xl ml-3">
-              Search
-            </button>
+            {/* App Store Buttons */}
+            <div className="flex flex-col gap-4 w-full lg:w-auto">
+              <h3 className="text-2xl font-extrabold text-gray-900 mb-2">
+                Get the App
+              </h3>
+              <p className="text-gray-600 mb-2">
+                Sync your recipes everywhere.
+              </p>
+
+              <a href="#" className="transition hover:opacity-90">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                  alt="Get it on Google Play"
+                  className="h-14"
+                />
+              </a>
+              <a href="#" className="transition hover:opacity-90">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
+                  alt="Download on the App Store"
+                  className="h-14"
+                />
+              </a>
+            </div>
           </div>
         </section>
+        <hr className="border-orange-500 " />
         {/* RECIPES SECTION */}
         <section className=" bg-orange-200 min-h-screen py-20">
           <div className=" mx-auto px-70 ">
