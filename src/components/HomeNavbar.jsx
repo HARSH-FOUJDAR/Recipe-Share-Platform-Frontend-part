@@ -4,24 +4,24 @@ import { FaSearch } from "react-icons/fa";
 
 const HomeNavbar = () => {
   return (
-    <nav className="w-full bg-white border-b shadow-sm px-6 py-4 flex items-center justify-between">
-      {/*  LOGO */}
+    <nav className="w-full px-6 py-4 relative z-10 flex items-center justify-between">
+      {/* LOGO */}
       <h1 className="text-2xl font-extrabold text-black">
         Recipe<span className="text-red-600">Nest</span>
       </h1>
 
-      {/*  AUTH BUTTONS */}
+      {/* AUTH BUTTONS */}
       <div className="flex items-center gap-4">
         <Link
           to="/login"
-          className="text-xl font-semibold text-gray-700 hover:text-red-500 hover:underline"
+          className="text-lg font-semibold text-gray-700 hover:text-red-500"
         >
           Login
         </Link>
 
         <Link
           to="/register"
-          className="bg-red-600 hover:bg-red-800 text-white px-6 flex py-1 rounded-full text-sm font-semibold"
+          className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full text-sm font-semibold"
         >
           Sign up
         </Link>
