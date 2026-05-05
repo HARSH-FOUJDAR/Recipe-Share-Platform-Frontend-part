@@ -142,8 +142,8 @@ const Home = () => {
         </section>
         <hr className="border-orange-500 " />
         {/* RECIPES SECTION */}
-        <section className=" bg-orange-200 min-h-screen py-20">
-          <div className=" mx-auto px-70 ">
+        <section className=" bg-orange-200 mx-auto   min-h-screen py-20">
+          <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
               <div className="flex flex-col text-center items-center mx-auto justify-center md:justify-start">
                 <h2 className="text-4xl font-bold text-gray-900">
@@ -166,7 +166,7 @@ const Home = () => {
 
             <AnimatePresence mode="wait">
               {loading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ">
+                <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                   {[1, 2, 3, 4].map((i) => (
                     <div
                       key={i}
