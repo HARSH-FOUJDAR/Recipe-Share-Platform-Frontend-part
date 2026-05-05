@@ -80,7 +80,7 @@ const Register = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
-                  placeholder="John Doe"
+                  placeholder="Enter your full name"
                   className="block w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-4 focus:ring-emerald-50 focus:border-emerald-500 focus:bg-white transition-all outline-none"
                 />
               </div>
@@ -100,7 +100,7 @@ const Register = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  placeholder="name@company.com"
+                  placeholder="Enter your email address"
                   className="block w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-4 focus:ring-emerald-50 focus:border-emerald-500 focus:bg-white transition-all outline-none"
                 />
               </div>
@@ -118,7 +118,7 @@ const Register = () => {
                   value={Mobile}
                   onChange={(e) => setMobile(e.target.value)}
                   required
-                  placeholder="91 + XXXYYYXYY "
+                  placeholder="Enter your mobile number"
                   className="block w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-4 focus:ring-emerald-50 focus:border-emerald-500 focus:bg-white transition-all outline-none"
                 />
               </div>
@@ -135,7 +135,7 @@ const Register = () => {
                   value={Bio}
                   onChange={(e) => setBio(e.target.value)}
                   required
-                  placeholder="Enter Bio"
+                  placeholder="Enter your bio"
                   className="block
                   w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200
                   text-slate-900 text-sm rounded-xl focus:ring-4
