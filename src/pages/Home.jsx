@@ -68,7 +68,7 @@ const Home = () => {
               <h1 className="text-5xl lg:text-7xl font-extrabold mb-6 tracking-tight text-gray-900 leading-tight">
                 Cook Like a <span className="text-orange-600">Pro</span>
               </h1>
-              <p className="text-gray-600 mb-10 text-lg leading-relaxed">
+              <p className="text-gray-900 mb-10 text-lg leading-relaxed">
                 Join our global community of food enthusiasts. Explore
                 hand-picked recipes that bring restaurant-quality flavors
                 directly to your home kitchen.
